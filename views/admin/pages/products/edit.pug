@@ -1,0 +1,82 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main
+
+  +alert-error(5000)
+  +alert-success(5000)
+
+  h1(class="mb-4") Cập nhật sản phẩm
+
+  form(
+    action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH` 
+    id="form-edit-product"
+    method="POST"
+    enctype="multipart/form-data"
+    )
+    div(class="form-group")
+      label(for="title") Tiêu đề
+      input(type="text" class="form-control" id="title" name="title" required value=product.title)
+
+    div(class="form-group")
+      label(for="desc") Mô tả
+      textarea(class="form-control" id="desc" name="description" rows="5" required value=product.description) #{product.description}
+
+    div(class="form-group")
+      label(for="price") Giá
+      input(type="number" class="form-control" id="price" name="price" min="0" required value=product.price)
+
+    div(class="form-group")
+      label(for="discount") % Giảm giá
+      input(type="number" class="form-control" id="discount" name="discount" min="0" max="100" value=product.discountPercentage)
+
+    div(class="form-group")
+      label(for="quantity") Số lượng
+      input(type="number" class="form-control" id="quantity" name="quantity" min="0" value=product.stock)
+
+    div(
+      class="form-group"
+      upload-image
+
+    )
+      label(for="thumbnail") Ảnh
+      input(type="file" class="form-control-file" id="thumbnail" name="thumbnail" placeholder="Đường dẫn ảnh hoặc URL" accept="image/*" upload-image-input)
+      img(
+        src=product.thumbnail
+        upload-image-preview
+        class="image-preview"
+      )
+
+    div(class="form-group")
+      label(for="position") Vị trí
+      input(
+        type="number"
+        class="form-control" 
+        id="position" 
+        name="position"
+        placeholder="Tu dong tang"
+        min="1"
+        value=product.position
+      )
+    div(class="form-group")
+      label Trạng thái
+      div
+        input(type="radio" 
+        id="active" 
+        name="status" 
+        value="1" 
+        checked=(product.status == "active" ? true : false)
+        )
+        label(for="active") Hoạt động
+        input(
+            type="radio" 
+            id="inactive" 
+            name="status" 
+            value="0"
+            checked=(product.status == "inactive" ? true : false)
+            )
+        label(for="inactive") Dừng hoạt động
+
+    button(type="submit" class="btn btn-primary mt-3") Cập nhật
+
+  script(src="/admin/js/product.js")
