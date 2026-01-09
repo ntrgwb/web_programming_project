@@ -1,11 +1,12 @@
 extends ../../layout/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
 
   +alert-error(5000)
 
-  h1(class="mb-4") Thêm mới sản phẩm
+  h1(class="mb-4") Thêm mới danh mục sản phẩm
 
   form(
     action=`${prefixAdmin}/product-category/create` 
@@ -18,6 +19,7 @@ block main
       label(
         for="title"
         ) Tiêu đề
+      br
       input(
         type="text" 
         lass="form-control" 
@@ -33,12 +35,21 @@ block main
       label(
         for="parent_id"
         ) Danh mục cha
-      input(
-        type="text" 
-        lass="form-control" 
-        id="parent_id" 
-        name="parent_id" 
-        )
+      br
+      //- input(
+      //-   type="text" 
+      //-   lass="form-control" 
+      //-   id="parent_id" 
+      //-   name="parent_id" 
+      //-   )
+      select(
+        name="parent_id"
+        id="parent_id"
+        class="form-control"
+      )
+        option(value="") -- Chọn danh mục cha --
+        if(records)
+        +select-tree(records)
 
     div(
       class="form-group"
