@@ -1,7 +1,13 @@
 /* Header */
+body {
+  background-color: black;
+  color: white;
+}
+
 .header {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
   padding: 10px 0;
+  margin-bottom: 10px;
 }
 
 .header .inner-logo img {
@@ -15,14 +21,31 @@
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
 .header .inner-menu > ul > li {
   margin-left: 20px;
 }
+
+.header .inner-menu > ul > li > a{
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.header .inner-menu > ul > li > a:hover{
+  opacity: 0.5;
+}
 /* End Header */
+
+/* Body */
+.title-home {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
 /* Footer */
 .footer {
