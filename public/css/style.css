@@ -45,6 +45,7 @@ body {
 .title-home {
   text-align: center;
   margin-bottom: 20px;
+  font-family: VT323, monospace;
 }
 
 /* Footer */
