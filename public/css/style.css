@@ -49,13 +49,35 @@ body {
 }
 
 /* Footer */
-.footer {
+/* .footer {
   background: #333;
   color: #fff;
   text-align: center;
   padding: 10px;
-}
+} */
 /* End Footer */
+
+/* Thiết lập cho Video nằm dưới cùng và phóng to kín màn hình */
+#bg-video {
+  position: fixed; /* Ghim chặt vào màn hình */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Rộng 100% màn hình */
+  height: 100vh; /* Cao 100% màn hình */
+  object-fit: cover; /* Cắt cúp tỷ lệ video cho vừa khít, không bị méo */
+  z-index: -2; /* Đẩy video lùi về lớp dưới cùng (như bức tường) */
+}
+
+/* Tấm màn lọc màu đen che nhẹ lên video */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Màu đen với độ mờ 70% */
+  z-index: -1; /* Nằm trên video (-2) nhưng nằm dưới nội dung web (0) */
+}
 
 .product-item {
   border: 1px solid #ddd;
