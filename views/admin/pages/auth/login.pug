@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{pageTitle}
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css")
+
+  body
+    .container.mt-5
+      .row.justify-content-center
+        .col-md-5
+          h2.text-center.mb-4 Đăng nhập quản trị
+
+          if messages.error
+            .alert.alert-danger
+              each item in messages.error
+                div= item
+
+          if messages.success
+            .alert.alert-success
+              each item in messages.success
+                div= item
+
+          form(action="/admin/auth/login" method="POST")
+            .form-group
+              label(for="email") Email
+              input.form-control(
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Nhập email"
+              )
+
+            .form-group
+              label(for="password") Mật khẩu
+              input.form-control(
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Nhập mật khẩu"
+              )
+
+            button.btn.btn-primary.btn-block(type="submit") Đăng nhập

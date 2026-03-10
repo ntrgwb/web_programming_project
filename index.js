@@ -47,6 +47,11 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // End setup flash
 
+app.use((req, res, next) => {
+  res.locals.adminUser = req.session.adminUser || null;
+  next();
+});
+
 //TinyMCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // End TinyMCE

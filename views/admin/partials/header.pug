@@ -1,7 +1,11 @@
 header.header
-    .container-fluid
-        .row.align-items-center
-            .col-3
-                .inner-logo
-                    a(href="/admin/dashboard") ADMIN
-            .col-9
+  .container-fluid
+    .row.align-items-center
+      .col-6
+        .inner-logo
+          a(href="/admin/dashboard") ADMIN
+      .col-6.text-right
+        if adminUser
+          a.btn.btn-sm.btn-warning.mr-2(href="/admin/account/change-password") Đổi mật khẩu
+          span.mr-2 Xin chào, #{adminUser.fullName}
+          a.btn.btn-sm.btn-danger(href="/admin/auth/logout") Đăng xuất
