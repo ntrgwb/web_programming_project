@@ -1,0 +1,66 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-10
+        .card.mb-4
+          .card-body
+            h2.mb-4 Chi tiết đơn hàng
+
+            p
+              strong Mã đơn:
+              |  #{order.id}
+
+            p
+              strong Họ tên:
+              |  #{order.customerInfo.fullName}
+
+            p
+              strong Số điện thoại:
+              |  #{order.customerInfo.phone}
+
+            p
+              strong Địa chỉ:
+              |  #{order.customerInfo.address}
+
+            p
+              strong Trạng thái:
+              if order.status == "pending"
+                span.text-warning  Chờ xác nhận
+              else if order.status == "confirmed"
+                span.text-info  Đã xác nhận
+              else if order.status == "shipping"
+                span.text-primary  Đang giao hàng
+              else if order.status == "done"
+                span.text-success  Hoàn thành
+              else if order.status == "cancel"
+                span.text-danger  Đã hủy
+              else
+                span= order.status
+
+            p
+              strong Tổng tiền:
+              |  #{order.totalPrice}$
+
+        .card
+          .card-body
+            h4.mb-3 Sản phẩm trong đơn
+
+            if order.products.length > 0
+              table.table.table-bordered
+                thead
+                  tr
+                    th Tên sản phẩm
+                    th Giá
+                    th Số lượng
+                    th Thành tiền
+                tbody
+                  each item in order.products
+                    tr
+                      td= item.productInfo ? item.productInfo.title : "Sản phẩm đã bị xóa"
+                      td= item.price + "$"
+                      td= item.quantity
+                      td= item.totalPrice + "$"
+            else
+              p Không có sản phẩm nào trong đơn.

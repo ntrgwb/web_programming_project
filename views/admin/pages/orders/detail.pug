@@ -1,0 +1,46 @@
+extends ../../layout/default.pug
+
+block main
+  .container-fluid.mt-4
+    h2.mb-4 Chi tiết đơn hàng
+
+    .card.mb-4
+      .card-header
+        strong Thông tin khách hàng
+      .card-body
+        p
+          strong Họ tên:
+          |  #{order.customerInfo.fullName}
+        p
+          strong Số điện thoại:
+          |  #{order.customerInfo.phone}
+        p
+          strong Địa chỉ:
+          |  #{order.customerInfo.address}
+        p
+          strong Trạng thái:
+          |  #{order.status}
+
+    .card
+      .card-header
+        strong Danh sách sản phẩm
+      .card-body
+        if order.products.length > 0
+          table.table.table-bordered
+            thead
+              tr
+                th Tên sản phẩm
+                th Giá
+                th Số lượng
+                th Thành tiền
+            tbody
+              each item in order.products
+                tr
+                  td= item.productInfo ? item.productInfo.title : "Sản phẩm đã bị xóa"
+                  td= item.price + "$"
+                  td= item.quantity
+                  td= item.totalPrice + "$"
+
+          h4.mt-3 Tổng đơn: #{order.totalPrice}$
+        else
+          p Không có sản phẩm trong đơn hàng.

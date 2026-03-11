@@ -1,0 +1,47 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8
+        .card
+          .card-body
+            h1.text-success.mb-4 Đặt hàng thành công!
+            p Cảm ơn bạn đã mua hàng.
+
+            hr
+
+            p
+              strong Họ tên:
+              |  #{order.customerInfo.fullName}
+
+            p
+              strong Số điện thoại:
+              |  #{order.customerInfo.phone}
+
+            p
+              strong Địa chỉ:
+              |  #{order.customerInfo.address}
+
+            p
+              strong Trạng thái:
+              if order.status == "pending"
+                span.text-warning  Đang xử lý
+              else if order.status == "confirmed"
+                span.text-info  Đã xác nhận
+              else if order.status == "shipping"
+                span.text-primary  Đang giao
+              else if order.status == "done"
+                span.text-success  Đã giao
+              else if order.status == "cancel"
+                span.text-danger  Đã hủy
+              else
+                span  #{order.status}
+
+            p
+              strong Tổng tiền:
+              |  #{order.totalPrice}$
+
+            .mt-4
+              a.btn.btn-primary.mr-2(href="/products") Tiếp tục mua sắm
+              a.btn.btn-info(href="/orders") Xem đơn hàng của tôi

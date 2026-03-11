@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-4
+    h1 Thông tin đặt hàng
+
+    form(action="/checkout/order" method="POST")
+      .form-group
+        label Họ tên
+        input.form-control(type="text" name="fullName" required)
+
+      .form-group
+        label Số điện thoại
+        input.form-control(type="text" name="phone" required)
+
+      .form-group
+        label Địa chỉ
+        textarea.form-control(name="address" required)
+
+      h4.mt-3 Tổng tiền: #{totalCartPrice}$
+
+      button.btn.btn-success(type="submit") Xác nhận đặt hàng

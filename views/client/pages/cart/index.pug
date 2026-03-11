@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-4
+    h1 Giỏ hàng
+
+    if messages.success
+      .alert.alert-success
+        each item in messages.success
+          div= item
+
+    if cartDetail.length > 0
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th Ảnh
+            th Tên sản phẩm
+            th Giá
+            th Số lượng
+            th Thành tiền
+            th Hành động
+        tbody
+          each item in cartDetail
+            tr
+              td
+                img(src=item.productInfo.thumbnail width="80")
+              td= item.productInfo.title
+              td= item.productInfo.price + "$"
+              td
+                form(action=`/cart/update/${item.product_id}` method="POST")
+                  input(type="number" name="quantity" value=item.quantity min="1")
+                  button.btn.btn-sm.btn-primary(type="submit") Cập nhật
+              td= item.totalPrice + "$"
+              td
+                a.btn.btn-sm.btn-danger(href=`/cart/delete/${item.product_id}`) Xóa
+
+      h3.mt-3 Tổng tiền: #{totalCartPrice}$
+
+      a.btn.btn-success(href="/checkout") Tiến hành đặt hàng
+    else
+      p Giỏ hàng đang trống.

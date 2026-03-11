@@ -1,9 +1,10 @@
-/* Header */
+/* Body */
 body {
   background-color: black;
   color: white;
 }
 
+/* Header */
 .header {
   border-bottom: 2px solid #ddd;
   padding: 10px 0;
@@ -29,56 +30,49 @@ body {
   margin-left: 20px;
 }
 
-.header .inner-menu > ul > li > a{
+.header .inner-menu > ul > li > a {
   color: white;
   text-decoration: none;
   font-weight: 600;
   transition: opacity 0.2s;
 }
 
-.header .inner-menu > ul > li > a:hover{
+.header .inner-menu > ul > li > a:hover {
   opacity: 0.5;
 }
 /* End Header */
 
-/* Body */
+/* Home */
 .title-home {
   text-align: center;
   margin-bottom: 20px;
   font-family: VT323, monospace;
 }
+/* End Home */
 
-/* Footer */
-/* .footer {
-  background: #333;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-} */
-/* End Footer */
-
-/* Thiết lập cho Video nằm dưới cùng và phóng to kín màn hình */
+/* Video background */
 #bg-video {
-  position: fixed; /* Ghim chặt vào màn hình */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Rộng 100% màn hình */
-  height: 100vh; /* Cao 100% màn hình */
-  object-fit: cover; /* Cắt cúp tỷ lệ video cho vừa khít, không bị méo */
-  z-index: -2; /* Đẩy video lùi về lớp dưới cùng (như bức tường) */
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
 }
 
-/* Tấm màn lọc màu đen che nhẹ lên video */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* Màu đen với độ mờ 70% */
-  z-index: -1; /* Nằm trên video (-2) nhưng nằm dưới nội dung web (0) */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: -1;
 }
+/* End video background */
 
+/* Product item */
 .product-item {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -86,8 +80,6 @@ body {
   background-color: #fff;
   transition: box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-
-  /* giúp cân lại layout */
   display: flex;
   flex-direction: column;
 }
@@ -96,12 +88,11 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Giải pháp 1: Hiển thị ảnh đầy đủ, không bị crop */
 .product-item .inner-image img {
   width: 100%;
-  height: 250px; 
-  object-fit: contain; /* quan trọng */
-  background-color: #fff; /* tránh viền đen hoặc khoảng trống xấu */
+  height: 250px;
+  object-fit: contain;
+  background-color: #fff;
   display: block;
 }
 
@@ -115,6 +106,15 @@ body {
   font-weight: bold;
   margin-bottom: 8px;
   color: #333;
+}
+
+.product-item .inner-title a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.product-item .inner-title a:hover {
+  text-decoration: underline;
 }
 
 .product-item .inner-price-new {
@@ -135,3 +135,129 @@ body {
   color: #27ae60;
   margin-top: 5px;
 }
+/* End product item */
+
+/* White content blocks */
+.card,
+.card-body,
+.card-title,
+.card-text,
+.card p,
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card strong,
+.card span,
+.card label,
+.card small,
+.card li,
+.card ul,
+.card ol,
+.card td,
+.card th,
+.card a:not(.btn) {
+  color: #000;
+}
+
+.card hr {
+  border-top: 1px solid #ccc;
+}
+
+.table {
+  background-color: #fff;
+  color: #000;
+}
+
+.table th,
+.table td,
+.table thead th,
+.table tbody td {
+  color: #000;
+  vertical-align: middle;
+}
+
+.form-control,
+textarea,
+input,
+select {
+  color: #000;
+}
+
+.form-control::placeholder,
+textarea::placeholder,
+input::placeholder {
+  color: #777;
+}
+/* End white content blocks */
+
+/* Utility for white card areas */
+.card-white,
+.card-white * {
+  color: #000 !important;
+}
+
+.card-white .text-warning {
+  color: #ffc107 !important;
+}
+
+.card-white .text-info {
+  color: #17a2b8 !important;
+}
+
+.card-white .text-primary {
+  color: #007bff !important;
+}
+
+.card-white .text-success {
+  color: #28a745 !important;
+}
+
+.card-white .text-danger {
+  color: #dc3545 !important;
+}
+
+.card-white .btn,
+.card-white .btn * {
+  color: #fff !important;
+}
+
+.card-white .btn-outline-secondary,
+.card-white .btn-outline-secondary * {
+  color: #6c757d !important;
+}
+/* End utility */
+
+/* Order page */
+.order-page-title {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.order-status {
+  font-weight: 600;
+}
+
+.order-status.pending {
+  color: #ffc107;
+}
+
+.order-status.confirmed {
+  color: #17a2b8;
+}
+
+.order-status.shipping {
+  color: #007bff;
+}
+
+.order-status.done {
+  color: #28a745;
+}
+
+.order-status.cancel {
+  color: #dc3545;
+}
+/* End order page */

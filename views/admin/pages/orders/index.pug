@@ -1,0 +1,60 @@
+extends ../../layout/default.pug
+
+block main
+  .container-fluid.mt-4
+    h2.mb-4 Danh sách đơn hàng
+
+    if messages.error
+      .alert.alert-danger
+        each item in messages.error
+          div= item
+
+    if messages.success
+      .alert.alert-success
+        each item in messages.success
+          div= item
+
+    if orders.length > 0
+      table.table.table-bordered.table-hover
+        thead
+          tr
+            th Mã đơn
+            th Khách hàng
+            th Số điện thoại
+            th Tổng tiền
+            th Trạng thái
+            th Ngày tạo
+            th Hành động
+        tbody
+          each item, index in orders
+            tr
+              td= item.id
+              td= item.customerInfo.fullName
+              td= item.customerInfo.phone
+              td= item.totalPrice + "$"
+              td
+                if item.status == "pending"
+                  span.badge.badge-warning Chờ xác nhận
+                else if item.status == "confirmed"
+                  span.badge.badge-info Đã xác nhận
+                else if item.status == "shipping"
+                  span.badge.badge-primary Đang giao
+                else if item.status == "done"
+                  span.badge.badge-success Hoàn thành
+                else if item.status == "cancel"
+                  span.badge.badge-danger Đã hủy
+                else
+                  span.badge.badge-secondary= item.status
+              td= item.createdAt.toLocaleString()
+              td
+                a.btn.btn-sm.btn-info.mr-1(href=`/admin/orders/detail/${item.id}`) Chi tiết
+                .dropdown.d-inline
+                  button.btn.btn-sm.btn-warning.dropdown-toggle(type="button" data-toggle="dropdown") Đổi trạng thái
+                  .dropdown-menu
+                    a.dropdown-item(href=`/admin/orders/change-status/pending/${item.id}`) Chờ xác nhận
+                    a.dropdown-item(href=`/admin/orders/change-status/confirmed/${item.id}`) Đã xác nhận
+                    a.dropdown-item(href=`/admin/orders/change-status/shipping/${item.id}`) Đang giao
+                    a.dropdown-item(href=`/admin/orders/change-status/done/${item.id}`) Hoàn thành
+                    a.dropdown-item(href=`/admin/orders/change-status/cancel/${item.id}`) Hủy đơn
+    else
+      p Chưa có đơn hàng nào.
