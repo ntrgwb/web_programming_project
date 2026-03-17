@@ -9,8 +9,11 @@ html
     link(href='https://fonts.googleapis.com/css2?family=VT323&display=swap' rel='stylesheet')
 
   body
-    video#bg-video(autoplay, loop, muted, playsinline)
-      source(src="/uploads/test.mp4", type="video/mp4")
+    .video-bg-container
+      video#vid-loop(loop, muted, playsinline, preload="auto", style="opacity: 0;")
+        source(src="/uploads/test-vid.mp4", type="video/mp4")
+      video#vid-intro(autoplay, muted, playsinline)
+        source(src="/uploads/202603131831.mp4", type="video/mp4")
     
     //- Lớp phủ màu đen mờ (giúp chữ nổi bật lên trên nền video đang chuyển động)
     .overlay
