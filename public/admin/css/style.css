@@ -1,7 +1,10 @@
 /* Header */
 .header {
     background: #202020;
-    padding: 10px 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0;
     position: sticky;
     top: 0;
     z-index: 999;
@@ -23,6 +26,12 @@
     position: fixed;
     top: 56px;
     left: 0;
+    z-index: 999; /* Luôn đảm bảo menu nổi lên trên nội dung */
+    transition: left 0.3s ease-in-out; /*Tạo độ mượt 0.3s khi trượt ngang */
+}
+
+html.sider-is-collapsed .body .sider {
+    left: -150px;
 }
 
 .body .main {
@@ -30,6 +39,13 @@
     position: relative;
     left: 150px;
     width: calc(100% - 180px);
+    transition: all 0.3s ease-in-out; 
+}
+
+/* Trạng thái khi bấm nút: Main phình to ra lấp chỗ trống */
+html.sider-is-collapsed .body .main {
+    left: 0;
+    width: calc(100% - 30px);
 }
 /* End Body */
 
@@ -41,13 +57,27 @@
 }
 
 .sider .inner-menu ul li a {
-    color: #fff;
+    color: #ffffff;
     display: block;
-    padding: 6px 10px;
+    padding: 12px 15px; /* Tăng padding lên một chút để dễ bấm hơn */
     border-bottom: 1px solid #515151;
+    text-decoration: none; /* Bỏ gạch chân mặc định của thẻ a */
+    transition: all 0.3s ease; /* Thêm chuyển động mượt mà khi đổi màu */
+}
+
+.sider .inner-menu ul li a:hover {
+    background-color: #343a40; /* Nền xám sáng lên một chút */
+    color: #00ff00; /* Đổi màu chữ sang xanh hacker cho ngầu (hoặc màu bạn thích) */
+    padding-left: 20px; /* Hiệu ứng chữ thụt lùi nhẹ vào trong cực kỳ nghệ */
+}
+
+
+.sider .inner-menu ul li a.active {
+    background-color: #007bff; /* Ví dụ: Nền xanh dương của Bootstrap */
+    color: #fff;
+    border-left: 4px solid #00ff00; /* Có một cái vạch màu đánh dấu bên trái */
 }
 /* End Sider */
-
 
 /* Show Alert */
 [show-alert] {

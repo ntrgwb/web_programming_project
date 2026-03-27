@@ -1,3 +1,54 @@
 extends ../../layouts/default.pug 
 block main 
-    h1.title-home Trang Chủ
+    //- h1.title-home Trang Chủ
+
+    .container 
+        //- 1. KHU VỰC HERO (Lời chào mừng & Nút Call-to-action)
+        .hero-section.text-center.mt-5.mb-5.pt-5
+            h1.title-home.glitch-text NullMarket
+            p.lead.text-light.mt-3.mb-5 Tự do. Ẩn danh. Không dấu vết. Mọi giao dịch đều được mã hóa tuyệt đối.
+            a.btn.btn-custom-neon.btn-lg(href="/products") >_ TRUY CẬP
+
+        //- 2. TUYÊN NGÔN BẢO MẬT (Các khối Trust Indicators)
+        .row.mt-5.pt-4
+            .col-md-4.mb-4
+                .cyber-card.text-center
+                    h4.text-info  Zero-Logs
+                    p.text-muted Không theo dõi IP. Không Cookie. Không yêu cầu Email. Danh tính của bạn là con số 0.
+            
+            .col-md-4.mb-4
+                .cyber-card.text-center
+                    h4.text-info  Ký Quỹ Escrow
+                    p.text-muted Tiền được hệ thống khóa an toàn. Chỉ giải ngân khi bạn xác nhận đã nhận đủ hàng.
+            
+            .col-md-4.mb-4
+                .cyber-card.text-center
+                    h4.text-info  Mã Hóa PGP
+                    p.text-muted Liên lạc đầu cuối tuyệt mật. Chỉ bạn và người bán có thể giải mã được tin nhắn giao dịch.
+
+        //- 3. HƯỚNG DẪN LUẬT CHƠI (Giao diện dòng lệnh Terminal)
+        .row.mt-5
+            .col-md-10.offset-md-1
+                .terminal-box
+                    .terminal-header
+                    span.dot.bg-danger
+                    span.dot.bg-warning
+                    span.dot.bg-success
+                    span.terminal-title root@anonymous-market:~
+                    .terminal-body
+                    p.text-success >_ HƯỚNG DẪN GIAO DỊCH KHÔNG CẦN TÀI KHOẢN:
+                    p.text-light [1] Lựa chọn: Khám phá và chọn tài nguyên bạn cần trên hệ thống.
+                    p.text-light [2] Mã hóa: Cung cấp địa chỉ nhận (hoặc email ẩn danh) đã được mã hóa bằng PGP Key của người bán.
+                    p.text-light [3] Thanh toán: Trả bằng Crypto (BTC/XMR). Lưu trữ cẩn thận 
+                        strong.text-warning MÃ ĐƠN HÀNG (Order Hash) 
+                        | của bạn.
+                    p.text-danger [!] Chú ý: Mất Order Hash = Mất đơn hàng. Hệ thống không lưu dữ liệu để khôi phục.
+                    p.text-success >_ 
+                        span.blink-cursor █
+
+        //- 4. CẢNH BÁO HỆ THỐNG (Disclaimer)
+        .row.mt-5.mb-5
+            .col-md-10.offset-md-1
+                .warning-box.text-center
+                    strong.text-danger [ CẢNH BÁO ] 
+                    span.text-muted Mọi giao dịch tại đây là không thể đảo ngược (Irreversible). Hãy kiểm tra kỹ mức độ uy tín (Vendor Level) của người bán trước khi chuyển tiền. Khuyến nghị luôn sử dụng VPN khi truy cập.

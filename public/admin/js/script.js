@@ -218,3 +218,23 @@ if(sort) {
 
 }
 // End Sort
+
+// Menu Sider
+document.addEventListener("DOMContentLoaded", () => {
+    const buttonToggle = document.querySelector("#toggle-sidebar");
+
+    if (buttonToggle) {
+        buttonToggle.addEventListener("click", () => {
+            // 1. Bật tắt class trên thẻ <html> cao nhất
+            document.documentElement.classList.toggle("sider-is-collapsed");
+            
+            // 2. Ghi chép lại vào bộ nhớ
+            if (document.documentElement.classList.contains("sider-is-collapsed")) {
+                localStorage.setItem("sidebarState", "collapsed");
+            } else {
+                localStorage.setItem("sidebarState", "open");
+            }
+        });
+    }
+});
+// End Menu 

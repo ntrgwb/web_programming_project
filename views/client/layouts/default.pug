@@ -6,14 +6,12 @@ html
     link(rel="stylesheet", href="/css/style.css")
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
-    link(href='https://fonts.googleapis.com/css2?family=VT323&display=swap' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Share+Tech+Mono&display=swap' rel='stylesheet')
+
 
   body
-    .video-bg-container
-      video#vid-loop(loop, muted, playsinline, preload="auto", style="opacity: 0;")
-        source(src="/uploads/test-vid.mp4", type="video/mp4")
-      video#vid-intro(autoplay, muted, playsinline)
-        source(src="/uploads/202603131831.mp4", type="video/mp4")
+    video#bg-video(autoplay, loop, muted, playsinline)
+      source(src="/uploads/matrix.mp4", type="video/mp4")
     
     //- Lớp phủ màu đen mờ (giúp chữ nổi bật lên trên nền video đang chuyển động)
     .overlay

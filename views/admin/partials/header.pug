@@ -1,9 +1,17 @@
 header.header
   .container-fluid
     .row.align-items-center
+      //- CỘT TRÁI: Chứa nút Menu và Logo
       .col-6
-        .inner-logo
-          a(href="/admin/dashboard") ADMIN
+        .d-flex.align-items-center
+          //- 1. Nút Hamburger Menu (Nằm ngoài cùng bên trái)
+          //- Gắn thêm id="toggle-sidebar" để lát nữa dùng JS gọi nó ra
+          button#toggle-sidebar.btn.btn-sm.border.text-white.mr-3(title="Thu gọn/Mở rộng Menu")
+            | ☰ 
+            
+          //- 2. Logo ADMIN (Đẩy sang bên cạnh nút Menu)
+          .inner-logo
+            a.text-white.font-weight-bold(href="/admin/dashboard" style="font-size: 1.2rem; text-decoration: none;") ADMIN
       .col-6.text-right
         if adminUser
           a.btn.btn-sm.btn-warning.mr-2(href="/admin/account/change-password") Đổi mật khẩu
