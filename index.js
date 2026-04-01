@@ -17,15 +17,12 @@ const io = new Server(server);
 io.on("connection", (socket) => {
 
     socket.on("sendMessage", async (data) => {
-
         const message = new Message({
-            senderId: data.senderId,     // ✅ dùng data
-            receiverId: data.receiverId, // ✅ thêm dòng này
+            role: data.role,
             content: data.content
         });
 
         await message.save();
-
         io.emit("receiveMessage", message);
     });
 
@@ -86,6 +83,6 @@ route(app);
 
 app.use(express.static(`${__dirname}/public`)); // su dung thu muc public de chua cac file static nhu css, js, images
 
-app.listen(port, () => {
+server .listen(port, () => {
   console.log(`App listening on port ${port}`);
 });

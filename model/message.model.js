@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema({
-    senderId: String,
-    receiverId: String,
+    role: String,   // "user" | "admin"
     content: String
-}, {
-    timestamps: true
-});
+}, { timestamps: true });
 
-const Message = mongoose.model("Message", messageSchema, "messages");
-
-module.exports = Message;
+module.exports = mongoose.model("Message", messageSchema);
