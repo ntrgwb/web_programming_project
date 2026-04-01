@@ -1,18 +1,42 @@
 const express  = require("express");
+const app = express();
 const path = require("path");
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const flash = require('express-flash')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+//chat.io//
+const http = require("http");
+const { Server } = require("socket.io");
+const Message = require("./model/message.model");
 
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+
+    socket.on("sendMessage", async (data) => {
+
+        const message = new Message({
+            senderId: data.senderId,     // ✅ dùng data
+            receiverId: data.receiverId, // ✅ thêm dòng này
+            content: data.content
+        });
+
+        await message.save();
+
+        io.emit("receiveMessage", message);
+    });
+
+});
+// end chat.io //
 
 // load env variavles from .env file
 require("dotenv").config(); 
 // End load env variables
 
 
-const app = express();
 
 
 // override with post having ?_method=DELETE
