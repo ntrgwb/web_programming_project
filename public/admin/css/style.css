@@ -131,3 +131,133 @@ html.sider-is-collapsed .body .main {
 }
 /* End Image Preview */
 
+.dashboard {
+    background: #f4f6fb;
+    min-height: calc(100vh - 86px);
+    padding: 25px;
+    border-radius: 14px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.dashboard-header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 5px;
+    color: #1f2937;
+}
+
+.dashboard-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.stat-card .stat-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.stat-card p {
+    margin: 0;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.stat-card h2 {
+    margin: 3px 0 0;
+    font-weight: 800;
+    color: #111827;
+}
+
+.stat-card.blue .stat-icon {
+    background: #dbeafe;
+}
+
+.stat-card.green .stat-icon {
+    background: #dcfce7;
+}
+
+.stat-card.orange .stat-icon {
+    background: #ffedd5;
+}
+
+.stat-card.purple .stat-icon {
+    background: #f3e8ff;
+}
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    height: 100%;
+}
+
+.card-title-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.card-title-custom h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.card-title-custom a {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #f3f4f6;
+}
+
+.product-item h6 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.product-item p {
+    margin: 3px 0 0;
+    color: #ef4444;
+    font-weight: 700;
+}
+

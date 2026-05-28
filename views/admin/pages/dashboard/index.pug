@@ -1,5 +1,80 @@
 extends ../../layout/default.pug
 
 block main
+  .dashboard
+    .dashboard-header
+      div
+        h1 Dashboard
+        p Quản lý tổng quan cửa hàng của bạn
+      a.btn.btn-primary(href="/admin/products") + Thêm sản phẩm
 
-    h1 Dashboard 
+    .row
+      .col-md-3.mb-4
+        .stat-card.blue
+          .stat-icon 📦
+          div
+            p Tổng sản phẩm
+            h2 #{totalProduct}
+
+      .col-md-3.mb-4
+        .stat-card.green
+          .stat-icon 🗂️
+          div
+            p Danh mục
+            h2 #{totalCategory}
+
+      .col-md-3.mb-4
+        .stat-card.orange
+          .stat-icon 🛒
+          div
+            p Đơn hàng
+            h2 #{totalOrder}
+
+      .col-md-3.mb-4
+        .stat-card.purple
+          .stat-icon 👤
+          div
+            p Tài khoản
+            h2 #{totalAccount}
+
+    .row
+      .col-md-7.mb-4
+        .dashboard-card
+          .card-title-custom
+            h4 Đơn hàng mới nhất
+            a(href="/admin/orders") Xem tất cả
+
+          if latestOrders.length > 0
+            table.table
+              thead
+                tr
+                  th Khách hàng
+                  th Số điện thoại
+                  th Tổng tiền
+                  th Trạng thái
+              tbody
+                each order in latestOrders
+                  tr
+                    td #{order.customerInfo.fullName}
+                    td #{order.customerInfo.phone}
+                    td #{order.totalPrice.toLocaleString("vi-VN")}đ
+                    td
+                      span.badge.badge-warning #{order.status}
+          else
+            p.text-muted Chưa có đơn hàng nào.
+
+      .col-md-5.mb-4
+        .dashboard-card
+          .card-title-custom
+            h4 Sản phẩm mới
+            a(href="/admin/products") Xem tất cả
+
+          if latestProducts.length > 0
+            each product in latestProducts
+              .product-item
+                img(src=product.thumbnail || "/images/no-image.png")
+                div
+                  h6 #{product.title}
+                  p #{product.price.toLocaleString("vi-VN")}đ
+          else
+            p.text-muted Chưa có sản phẩm nào.

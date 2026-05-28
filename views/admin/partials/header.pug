@@ -15,5 +15,5 @@ header.header
       .col-6.text-right
         if adminUser
           a.btn.btn-sm.btn-warning.mr-2(href="/admin/account/change-password") Đổi mật khẩu
-          span.mr-2 Xin chào, #{adminUser.fullName}
+          span.mr-2(style="color: white;") Xin chào, #{adminUser.fullName}
           a.btn.btn-sm.btn-danger(href="/admin/auth/logout") Đăng xuất
