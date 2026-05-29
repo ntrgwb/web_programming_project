@@ -1,3 +1,4 @@
+const MongoStore = require("connect-mongo");
 const express  = require("express");
 const app = express();
 const path = require("path");
@@ -65,16 +66,20 @@ app.set("view engine", "pug") // pug sẽ lấy các file trong thư mục views
 // setup flash
 app.set("trust proxy", 1);
 
-app.use(cookieParser('SLDFJAFLJGAKSJG'));
+app.use(cookieParser("SLDFJAFLJGAKSJG"));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'SLDFJAFLJGAKSJG',
+  secret: process.env.SESSION_SECRET || "SLDFJAFLJGAKSJG",
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "sessions"
+  }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+    secure: true,
+    sameSite: "none"
   }
 }));
 
