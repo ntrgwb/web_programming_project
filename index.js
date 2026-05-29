@@ -1,4 +1,5 @@
-const express  = require("express");
+const MongoStore = require("connect-mongo");
+const express = require("express");
 const app = express();
 const path = require("path");
 const methodOverride = require("method-override");
@@ -30,7 +31,6 @@ io.on("connection", (socket) => {
 
 // load env variables from .env file
 require("dotenv").config();
-// End load env variables
 
 // override with post having ?_method=DELETE
 app.use(methodOverride("_method"));
@@ -42,10 +42,9 @@ const systemConfig = require("./config/system");
 
 // connect to database
 const database = require("./config/database");
+database.connect();
 
 const port = process.env.PORT || 3000;
-
-database.connect();
 
 const routeAdmin = require("./routes/admin/index_route");
 const route = require("./routes/client/index_routes");
@@ -56,7 +55,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
-// setup flash
+// setup flash + session
 app.set("trust proxy", 1);
 
 app.use(cookieParser("SLDFJAFLJGAKSJG"));
@@ -65,6 +64,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "SLDFJAFLJGAKSJG",
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "sessions"
+  }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
     secure: process.env.NODE_ENV === "production",
@@ -73,7 +76,7 @@ app.use(session({
 }));
 
 app.use(flash());
-// End setup flash
+// End setup flash + session
 
 app.use((req, res, next) => {
   res.locals.adminUser = req.session.adminUser || null;
@@ -82,7 +85,6 @@ app.use((req, res, next) => {
 
 // TinyMCE
 app.use("/tinymce", express.static(path.join(__dirname, "node_modules", "tinymce")));
-// End TinyMCE
 
 // Static files
 app.use(express.static(`${__dirname}/public`));
