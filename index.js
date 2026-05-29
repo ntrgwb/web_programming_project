@@ -63,8 +63,21 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug") // pug sẽ lấy các file trong thư mục views
 
 // setup flash
+app.set("trust proxy", 1);
+
 app.use(cookieParser('SLDFJAFLJGAKSJG'));
-app.use(session({ cookie: { maxAge: 60000 }}));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'SLDFJAFLJGAKSJG',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+  }
+}));
+
 app.use(flash());
 // End setup flash
 
@@ -83,6 +96,6 @@ route(app);
 
 app.use(express.static(`${__dirname}/public`)); // su dung thu muc public de chua cac file static nhu css, js, images
 
-server .listen(port, () => {
+server.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
