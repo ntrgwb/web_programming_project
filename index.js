@@ -33,11 +33,8 @@ require("dotenv").config();
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-<<<<<<< HEAD
-=======
 app.use(bodyParser.json());
 
->>>>>>> a5e22e4453d99b860fe4867008d24ab552a3a4b4
 const systemConfig = require("./config/system");
 const database = require("./config/database");
 
