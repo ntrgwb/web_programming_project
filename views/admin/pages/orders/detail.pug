@@ -37,10 +37,10 @@ block main
               each item in order.products
                 tr
                   td= item.productInfo ? item.productInfo.title : "Sản phẩm đã bị xóa"
-                  td= item.price + "$"
+                  td= item.price + "đ"
                   td= item.quantity
-                  td= item.totalPrice + "$"
+                  td= item.totalPrice + "đ"
 
-          h4.mt-3 Tổng đơn: #{order.totalPrice}$
+          h4.mt-3 Tổng đơn: #{order.totalPrice}đ
         else
           p Không có sản phẩm trong đơn hàng.

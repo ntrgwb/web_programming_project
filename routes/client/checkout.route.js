@@ -6,5 +6,6 @@ const controller = require("../../controllers/client/checkout.controller");
 router.get("/", controller.index);
 router.post("/order", controller.orderPost);
 router.get("/success/:id", controller.success);
+router.get('/crypto-payment/:id', controller.cryptoPayment);
 
 module.exports = router;

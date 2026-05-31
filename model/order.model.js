@@ -15,6 +15,15 @@ const orderSchema = new mongoose.Schema(
       }
     ],
     totalPrice: Number,
+    exact_amount: Number, // Số lẻ nhận diện (Ví dụ: 10.000142)
+    tx_id: { 
+      type: String, 
+      default: null 
+    }, // Mã giao dịch Blockchain để làm bằng chứng
+    paymentMethod: { 
+      type: String, 
+      default: "cod" 
+    },
     status: {
       type: String,
       default: "pending"

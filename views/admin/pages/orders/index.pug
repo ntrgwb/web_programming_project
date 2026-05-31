@@ -22,6 +22,8 @@ block main
             th Khách hàng
             th Số điện thoại
             th Tổng tiền
+            th Phương thức
+            th Số USDT quét
             th Trạng thái
             th Ngày tạo
             th Hành động
@@ -31,10 +33,27 @@ block main
               td= item.id
               td= item.customerInfo.fullName
               td= item.customerInfo.phone
-              td= item.totalPrice + "$"
+              //- 1. Sửa cách hiển thị tiền gốc
+              td #{item.totalPrice.toLocaleString()} đ
+              
+              //- 2. Thêm cột Phương thức thanh toán
+              td
+                if item.paymentMethod === "crypto"
+                  span.badge.badge-warning Crypto (USDT)
+                else
+                  span.badge.badge-info Tiền mặt (COD)
+                  
+              //- 3. Thêm cột Số lượng USDT khách nợ
+              td
+                if item.paymentMethod === "crypto"
+                  strong.text-danger #{item.exact_amount}
+                else
+                  span.text-muted -
               td
                 if item.status == "pending"
                   span.badge.badge-warning Chờ xác nhận
+                else if item.status == "paid"
+                  span.badge.badge-success Đã thanh toán (USDT)
                 else if item.status == "confirmed"
                   span.badge.badge-info Đã xác nhận
                 else if item.status == "shipping"

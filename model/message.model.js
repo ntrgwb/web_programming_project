@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema({
+    sessionId: String,
     role: String,   // "user" | "admin"
     content: String
 }, { timestamps: true });
