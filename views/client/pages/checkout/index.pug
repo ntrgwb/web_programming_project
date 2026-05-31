@@ -1,22 +1,43 @@
 extends ../../layouts/default.pug
 
 block main
-  .container.my-4
-    h1 Thông tin đặt hàng
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow-sm.border-0
+          .card-body.p-4.p-md-5
+            h2.text-center.mb-4 Thông tin đặt hàng
 
-    form(action="/checkout/order" method="POST")
-      .form-group
-        label Họ tên
-        input.form-control(type="text" name="fullName" required)
+            form(action="/checkout/order" method="POST")
+              
+              .form-group.mb-3
+                label.font-weight-bold Họ tên
+                input.form-control(type="text" name="fullName" required)
 
-      .form-group
-        label Số điện thoại
-        input.form-control(type="text" name="phone" required)
+              .form-group.mb-3
+                label.font-weight-bold Số điện thoại
+                input.form-control(type="text" name="phone" required)
 
-      .form-group
-        label Địa chỉ
-        textarea.form-control(name="address" required)
+              .form-group.mb-4
+                label.font-weight-bold Địa chỉ
+                textarea.form-control(name="address" rows="3" required)
 
-      h4.mt-3 Tổng tiền: #{totalCartPrice}$
+              hr.my-4
 
-      button.btn.btn-success(type="submit") Xác nhận đặt hàng
+              //- THÊM PHẦN CHỌN PHƯƠNG THỨC THANH TOÁN
+              .form-group.mb-4
+                label.font-weight-bold Phương thức thanh toán
+                
+                .form-check.mb-2.p-2.border.rounded.bg-light
+                  input.form-check-input.ml-1.mt-2(type="radio" name="paymentMethod" id="pay-cod" value="cod" checked)
+                  label.form-check-label.ml-4(for="pay-cod") Thanh toán tiền mặt
+                
+                .form-check.p-2.border.rounded.bg-light
+                  input.form-check-input.ml-1.mt-2(type="radio" name="paymentMethod" id="pay-crypto" value="crypto")
+                  label.form-check-label.ml-4(for="pay-crypto") Thanh toán bằng USDT (TRC20)
+
+              hr.my-4
+
+              h4.mt-3.mb-4 Tổng tiền: #{totalCartPrice}đ
+
+              button.btn.btn-success.w-100.py-2.font-weight-bold(type="submit") Xác nhận đặt hàng

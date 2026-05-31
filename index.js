@@ -43,6 +43,7 @@ app.use(methodOverride('_method'))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(bodyParser.json());
 
 const systemConfig = require("./config/system");
 

@@ -20,6 +20,10 @@ module.exports.addPost = async (req, res) => {
     });
   }
 
+  if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+    return res.json({ success: true, message: "Đã thêm vào giỏ hàng" });
+  }
+  
   req.flash("success", "Đã thêm sản phẩm vào giỏ hàng!");
   return res.redirect("/cart");
 };

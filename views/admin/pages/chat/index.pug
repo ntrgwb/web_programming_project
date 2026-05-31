@@ -69,4 +69,17 @@ block main
     window.onload = () => {
       const box = document.getElementById("chat-box");
       box.scrollTop = box.scrollHeight;
+
+      const input = document.getElementById("msg");
+      if (input) {
+        input.addEventListener("keypress", function(event) {
+          // Kiểm tra xem phím vừa gõ có phải là Enter không
+          if (event.key === "Enter") {
+            // Ngăn chặn hành vi mặc định (tránh lỗi tự reload trang nếu input nằm trong form)
+            event.preventDefault(); 
+            // Gọi hàm gửi tin nhắn giống hệt như khi bấm nút
+            sendMessage();
+          }
+        });
+      }
     };

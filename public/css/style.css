@@ -275,7 +275,7 @@ body {
 }
 
 /* Tái cấu trúc nút .btn-success thành nút Neon Xanh lơ */
-.product-item form .btn-success {
+.product-item form .btn-outline-info {
   width: 100%;
   background-color: transparent;
   border: 1px solid #00FFFF;
@@ -287,9 +287,27 @@ body {
   box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
 }
 
-.product-item form .btn-success:hover {
+.product-item form .btn-outline-info:hover {
   background-color: #00FFFF;
   color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+.product-item form .btn-info {
+  width: 100%;
+  background-color: #00FFFF; /* Đổ nền xanh lơ luôn cho nổi bật */
+  border: 1px solid #00FFFF;
+  color: #000; /* Chữ màu đen trên nền sáng */
+  border-radius: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.product-item form .btn-info:hover {
+  background-color: transparent; /* Hover thì rút nền, hiện viền */
+  color: #00FFFF;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
 }
 /* End product item */
@@ -418,3 +436,35 @@ input::placeholder {
   color: #dc3545;
 }
 /* End order page */
+
+.inner-cart {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Ép toàn bộ nội dung trong cột này sát lề phải */
+  padding-right: 15px; /* Cách lề một chút cho thoáng */
+}
+
+.cyber-header-cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: #fff; /* Chữ trắng */
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+/* Hiệu ứng chớp xanh lơ khi hover (giữ nguyên style web bạn) */
+.cyber-header-cart:hover {
+  color: #bededebf;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+}
+
+/* Khi có JavaScript bơm hiệu ứng lúc add to cart */
+.badge-pop {
+  transform: scale(1.5);
+  box-shadow: 0 0 10px #ff424e;
+}
