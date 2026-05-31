@@ -20,66 +20,19 @@ block main
             span(style="background:#eee;padding:5px 10px;border-radius:10px;display:inline-block")
               | #{msg.content}
 
-    div(style="display:flex;gap:5px")
-      input(type="text" id="msg" placeholder="Nhập phản hồi..." style="flex:1;padding:5px")
-      button(onclick="sendMessage()") Gửi
-
-  script(src="/socket.io/socket.io.js")
+    form(action="/admin/chat/send" method="POST" style="display:flex;gap:5px")
+      input(
+        type="text"
+        name="content"
+        placeholder="Nhập phản hồi..."
+        required
+        autocomplete="off"
+        style="flex:1;padding:5px"
+      )
+      button(type="submit") Gửi
 
   script.
-    const socket = io();
-
-    function sendMessage() {
-      const input = document.getElementById("msg");
-      if (!input.value.trim()) return;
-
-      socket.emit("sendMessage", {
-        role: "admin",
-        content: input.value
-      });
-
-      input.value = "";
-    }
-
-    socket.on("receiveMessage", (msg) => {
-      const box = document.getElementById("chat-box");
-
-      const div = document.createElement("div");
-      div.style.margin = "5px";
-
-      // lOGIC DUY NHẤT
-      if (msg.role === "admin") {
-        div.style.textAlign = "right";
-        div.innerHTML = `
-          <span style="font-size:12px;color:#888">Admin</span><br>
-          <span style="background:#2196F3;color:white;padding:5px 10px;border-radius:10px;display:inline-block">${msg.content}</span>
-        `;
-      } else {
-        div.style.textAlign = "left";
-        div.innerHTML = `
-          <span style="font-size:12px;color:#888">User</span><br>
-          <span style="background:#eee;padding:5px 10px;border-radius:10px;display:inline-block">${msg.content}</span>
-        `;
-      }
-
-      box.appendChild(div);
-      box.scrollTop = box.scrollHeight;
-    });
-
     window.onload = () => {
       const box = document.getElementById("chat-box");
       box.scrollTop = box.scrollHeight;
-
-      const input = document.getElementById("msg");
-      if (input) {
-        input.addEventListener("keypress", function(event) {
-          // Kiểm tra xem phím vừa gõ có phải là Enter không
-          if (event.key === "Enter") {
-            // Ngăn chặn hành vi mặc định (tránh lỗi tự reload trang nếu input nằm trong form)
-            event.preventDefault(); 
-            // Gọi hàm gửi tin nhắn giống hệt như khi bấm nút
-            sendMessage();
-          }
-        });
-      }
     };
