@@ -7,10 +7,10 @@ html
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
     link(href='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Share+Tech+Mono&display=swap' rel='stylesheet')
-
+    script(src="https://unpkg.com/@hotwired/turbo@7.3.0/dist/turbo.es2017-umd.js")
 
   body
-    video#bg-video(autoplay, loop, muted, playsinline)
+    video#bg-video(autoplay, loop, muted, playsinline, data-turbo-permanent)
       source(src="/uploads/matrix.mp4", type="video/mp4")
     
     //- Lớp phủ màu đen mờ (giúp chữ nổi bật lên trên nền video đang chuyển động)
