@@ -9,5 +9,7 @@ router.get("/login", authMiddleware.alreadyAuth, controller.login);
 router.post("/login", authMiddleware.alreadyAuth, validate.loginPost, controller.loginPost);
 
 router.get("/logout", authMiddleware.requireAuth, controller.logout);
+router.post("/leave-admin", controller.leaveAdmin);
+router.post("/stay-admin", controller.stayAdmin);
 
 module.exports = router;

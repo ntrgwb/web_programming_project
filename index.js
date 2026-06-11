@@ -37,6 +37,7 @@ app.use(bodyParser.json());
 
 const systemConfig = require("./config/system");
 const database = require("./config/database");
+const { formatDateShort } = require("./helpers/dateTime");
 
 const port = process.env.PORT || 3000;
 
@@ -46,6 +47,22 @@ const routeAdmin = require("./routes/admin/index_route");
 const route = require("./routes/client/index_routes");
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.formatDateShort = formatDateShort;
+app.locals.formatDateTimeInput = (value) => {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const pad = (number) => String(number).padStart(2, "0");
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hour = pad(date.getHours());
+  const minute = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hour}:${minute}`;
+};
 
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
@@ -64,7 +81,6 @@ app.use(session({
     collectionName: "sessions"
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
   }

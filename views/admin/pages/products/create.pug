@@ -2,150 +2,59 @@ extends ../../layout/default.pug
 include ../../mixins/alert.pug
 
 block main
-
   +alert-error(5000)
 
-  h1(class="mb-4") Thêm mới sản phẩm
+  h1.mb-4 Tạo phiên đấu giá
 
-  form(
-    action=`${prefixAdmin}/products/create` 
-    id="form-create-product"
-    method="POST"
-    enctype="multipart/form-data"
-    )
-    div(
-      class="form-group"
-      )
-      label(
-        for="title"
-        ) Tiêu đề
-      input(
-        type="text" c
-        lass="form-control" 
-        id="title" 
-        name="title" 
-        required
-        )
+  form(action=`${prefixAdmin}/products/create` id="form-create-product" method="POST" enctype="multipart/form-data")
+    .form-group
+      label(for="title") Tiêu đề
+      input.form-control(type="text" id="title" name="title" required)
 
-    div(
-      class="form-group"
-      )
-      label(
-        for="desc"
-        ) Mô tả
-      textarea(
-        class="form-control textarea-mce" 
-        id="desc" 
-        name="description" 
-        rows="5" 
-        required
-        )
+    .form-group
+      label(for="desc") Mô tả
+      textarea.form-control.textarea-mce(id="desc" name="description" rows="5" required)
 
-    div(
-      class="form-group"
-      )
-      label(
-        for="price"
-        ) Giá
-      input(
-        type="number" 
-        class="form-control" 
-        id="price" 
-        name="price" 
-        min="0" 
-        value="0" 
-        required
-        )
+    .form-group
+      label(for="startingPrice") Giá khởi điểm
+      input.form-control(type="number" id="startingPrice" name="startingPrice" min="0" value="0" required)
 
-    div(
-      class="form-group"
-      )
-      label(
-        for="discount"
-        ) % Giảm giá
-      input(
-        type="number" 
-        class="form-control" 
-        id="discount" 
-        name="discount" 
-        min="0" 
-        max="100" 
-        value="0"
-        )
+    .form-group
+      label(for="bidStep") Bước giá tối thiểu
+      input.form-control(type="number" id="bidStep" name="bidStep" min="1" value="10000" required)
 
-    div(
-      class="form-group"
-      )
-      label(
-        for="quantity"
-        ) Số lượng
-      input(
-        type="number" 
-        class="form-control" 
-        id="quantity" 
-        name="quantity" 
-        min="0" 
-        value="0"
-        )
+    .form-group
+      label(for="auctionStartAt") Thời gian bắt đầu
+      input.form-control(type="datetime-local" id="auctionStartAt" name="auctionStartAt")
 
-    div(
-      class="form-group"
-      upload-image
+    .form-group
+      label(for="auctionEndAt") Thời gian kết thúc
+      input.form-control(type="datetime-local" id="auctionEndAt" name="auctionEndAt")
 
-    )
-      label(
-        for="thumbnail"
-        ) Ảnh
-      input(
-        type="file" 
-        class="form-control-file" 
-        id="thumbnail" 
-        name="thumbnail" 
-        placeholder="Đường dẫn ảnh hoặc URL" 
-        accept="image/*" 
-        upload-image-input
-        )
-      img(
-        src=""
-        upload-image-preview
-        class="image-preview"
-      )
+    .form-group
+      label(for="auctionStatus") Trạng thái phiên
+      select.form-control(id="auctionStatus" name="auctionStatus")
+        option(value="live" selected) Đang mở
+        option(value="draft") Nháp
+        option(value="cancelled") Đã hủy
 
-    div(class="form-group")
+    .form-group(upload-image)
+      label(for="thumbnail") Ảnh
+      input.form-control-file(type="file" id="thumbnail" name="thumbnail" accept="image/*" upload-image-input)
+      img.image-preview(src="" upload-image-preview)
+
+    .form-group
       label(for="position") Vị trí
-      input(
-        type="number"
-        class="form-control" 
-        id="position" 
-        name="position"
-        placeholder="Tu dong tang"
-        min="1"
-      )
-    div(
-      class="form-group"
-      )
-      label Trạng thái
+      input.form-control(type="number" id="position" name="position" placeholder="Tự động tăng" min="1")
+
+    .form-group
+      label Trạng thái hiển thị
       div
-        input(
-          type="radio" 
-          id="active" 
-          name="status" 
-          value="1" 
-          checked
-          )
-        label(
-          for="active"
-          ) Hoạt động
-        input(
-          type="radio" 
-          id="inactive" 
-          name="status" 
-          value="0"
-          )
-        label(
-          for="inactive"
-          ) Dừng hoạt động
+        input(type="radio" id="active" name="status" value="active" checked)
+        label.mr-3(for="active") Hoạt động
+        input(type="radio" id="inactive" name="status" value="inactive")
+        label(for="inactive") Dừng
 
-    button(type="submit" class="btn btn-primary mt-3") Tạo mới
+    button.btn.btn-primary.mt-3(type="submit") Tạo phiên
 
-  script(src="/admin/js/product.js")
+  script(src="/admin/js/script.js")

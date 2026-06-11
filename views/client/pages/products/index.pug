@@ -1,40 +1,62 @@
-extends ../../layouts/default.pug 
+extends ../../layouts/default.pug
 include ../../mixins/.box-head.pug
 
 block main
   .container.my-3
     .row
       .col-12
-        +box-head("Danh Sách Sản Phẩm")
+        +box-head("Danh sách phiên đấu giá")
 
-    .row
-      each item in products
-        .col-4.mb-3
-          .product-item
-            .inner-image
-              img(
-                src=item.thumbnail
-                alt=item.title
-              )
-            .inner-content
+    if messages.success
+      .alert.alert-success
+        each item in messages.success
+          div= item
+
+    if messages.error
+      .alert.alert-danger
+        each item in messages.error
+          div= item
+
+    .alert.alert-info.card-white
+      strong Mã người đấu giá:
+      |  #{bidderCode}
+
+    if products.length > 0
+      .row
+        each item in products
+          .col-md-4.mb-3
+            .product-item.auction-item
+              .inner-image
+                img(
+                  src=item.thumbnail || "/images/no-image.png"
+                  alt=item.title
+                )
+              .inner-content
                 h3.inner-title
                   a(href=`/products/${item.slug}`) #{item.title}
 
-                .inner-price-new #{item.priceNew}đ  
-                .inner-price-old #{item.price}đ
-                .inner-discount -#{item.discountPercentage}đ
+                .mb-2
+                  if item.auctionState === "live"
+                    span.badge.badge-success Đang đấu giá
+                  else if item.auctionState === "upcoming"
+                    span.badge.badge-info Sắp bắt đầu
+                  else if item.auctionState === "ended"
+                    span.badge.badge-secondary Đã kết thúc
+                  else
+                    span.badge.badge-warning #{item.auctionState}
 
-                form(action=`/cart/add/${item.id}` method="POST")
-                  input(type="hidden" name="quantity" value="1")
-                  .row.mt-2
-                    .col-6.pr-1
-                      //- Dùng type="button" và class "btn-add-to-cart" để JS bắt lấy nó, không cho chuyển trang
-                      button.btn.btn-outline-info.w-100.btn-add-to-cart(type="button" title="Thêm vào giỏ hàng")
-                        //- Nếu bạn có FontAwesome thì dùng dòng dưới, không thì thay bằng chữ "Thêm"
-                        i.fa-solid.fa-cart-plus
-                          | Thêm vào giỏ
-                        
-                    .col-6.pl-1
-                      button.btn.btn-outline-info.w-100(type="submit") 
-                        i.fa-solid.fa-bolt.mr-1
-                          | Mua ngay
+                .inner-price-new #{item.currentPrice.toLocaleString("vi-VN")}đ
+                .auction-line Giá khởi điểm: #{item.startingPrice.toLocaleString("vi-VN")}đ
+                .auction-line Bước giá: #{item.bidStep.toLocaleString("vi-VN")}đ
+                .auction-line Lượt đặt: #{item.bidCount || 0}
+
+                if item.auctionEndAt
+                  .auction-line Kết thúc: #{formatDateShort(item.auctionEndAt)}
+
+                a.btn.btn-outline-info.w-100.mt-3(href=`/products/${item.slug}`)
+                  if item.isLive
+                    | Đặt giá
+                  else
+                    | Xem phiên
+    else
+      .alert.alert-info Chưa có phiên đấu giá nào.

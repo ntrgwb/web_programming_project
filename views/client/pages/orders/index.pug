@@ -2,60 +2,52 @@ extends ../../layouts/default.pug
 
 block main
   .container.my-5
-    h1.mb-4 Đơn hàng của tôi
+    h1.mb-4 Phiên đã thắng
+
+    .alert.alert-info.card-white
+      strong Mã người đấu giá:
+      |  #{bidderCode}
 
     if orders.length > 0
       each order in orders
         .card.mb-4
           .card-body
-            h4.mb-3 Đơn hàng
+            h4.mb-3 #{order.auctionSnapshot && order.auctionSnapshot.title ? order.auctionSnapshot.title : "Phiên đấu giá"}
 
             p
-              strong Họ tên:
-              |  #{order.customerInfo.fullName}
+              strong Mã thanh toán:
+              |  #{order.id}
 
             p
-              strong Số điện thoại:
-              |  #{order.customerInfo.phone}
+              strong Giá thắng:
+              |  #{order.totalPrice.toLocaleString("vi-VN")}đ
 
             p
-              strong Địa chỉ:
-              |  #{order.customerInfo.address}
+              strong Phương thức:
+              if order.paymentMethod === "crypto"
+                span.badge.badge-warning.ml-2 USDT
+              else
+                span.badge.badge-info.ml-2 COD
 
             p
               strong Trạng thái:
               if order.status == "pending"
-                span.text-warning  Đang xử lý
+                span.text-warning  Chờ xử lý
+              else if order.status == "paid"
+                span.text-success  Đã thanh toán
               else if order.status == "confirmed"
                 span.text-info  Đã xác nhận
               else if order.status == "shipping"
                 span.text-primary  Đang giao
               else if order.status == "done"
-                span.text-success  Đã giao
+                span.text-success  Hoàn thành
               else if order.status == "cancel"
                 span.text-danger  Đã hủy
               else
                 span  #{order.status}
 
-            p
-              strong Tổng tiền:
-              |  #{order.totalPrice}$
-
-            h5.mt-4 Sản phẩm đã mua
-            table.table.table-bordered
-              thead
-                tr
-                  th Tên sản phẩm
-                  th Giá
-                  th Số lượng
-                  th Thành tiền
-              tbody
-                each item in order.products
-                  tr
-                    td= item.productInfo ? item.productInfo.title : "Sản phẩm đã bị xóa"
-                    td= item.price + "$"
-                    td= item.quantity
-                    td= item.totalPrice + "$"
+            a.btn.btn-sm.btn-info.mr-2(href=`/orders/detail/${order.id}`) Chi tiết
+            if order.paymentMethod === "crypto" && order.status === "pending"
+              a.btn.btn-sm.btn-warning(href=`/checkout/crypto-payment/${order.id}`) Thanh toán USDT
     else
-      .alert.alert-info
-        | Bạn chưa có đơn hàng nào.
+      .alert.alert-info Bạn chưa thắng phiên đấu giá nào.

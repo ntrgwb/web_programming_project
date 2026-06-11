@@ -6,13 +6,21 @@ block main
       .col-md-8
         .card
           .card-body
-            h1.text-success.mb-4 Đặt hàng thành công!
-            p Cảm ơn bạn đã mua hàng.
+            h1.text-success.mb-4 Đã ghi nhận thanh toán
+            p Thanh toán cho phiên thắng đã được tạo.
 
             hr
 
             p
-              strong Họ tên:
+              strong Phiên:
+              |  #{order.auctionSnapshot && order.auctionSnapshot.title ? order.auctionSnapshot.title : "Phiên đấu giá"}
+
+            p
+              strong Giá thắng:
+              |  #{order.totalPrice.toLocaleString("vi-VN")}đ
+
+            p
+              strong Người nhận:
               |  #{order.customerInfo.fullName}
 
             p
@@ -25,23 +33,8 @@ block main
 
             p
               strong Trạng thái:
-              if order.status == "pending"
-                span.text-warning  Đang xử lý
-              else if order.status == "confirmed"
-                span.text-info  Đã xác nhận
-              else if order.status == "shipping"
-                span.text-primary  Đang giao
-              else if order.status == "done"
-                span.text-success  Đã giao
-              else if order.status == "cancel"
-                span.text-danger  Đã hủy
-              else
-                span  #{order.status}
-
-            p
-              strong Tổng tiền:
-              |  #{order.totalPrice}$
+              |  #{order.status}
 
             .mt-4
-              a.btn.btn-primary.mr-2(href="/products") Tiếp tục mua sắm
-              a.btn.btn-info(href="/orders") Xem đơn hàng của tôi
+              a.btn.btn-primary.mr-2(href="/products") Xem phiên khác
+              a.btn.btn-info(href="/orders") Phiên đã thắng

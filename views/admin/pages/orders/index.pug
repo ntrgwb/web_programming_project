@@ -2,7 +2,7 @@ extends ../../layout/default.pug
 
 block main
   .container-fluid.mt-4
-    h2.mb-4 Danh sách đơn hàng
+    h2.mb-4 Thanh toán phiên thắng
 
     if messages.error
       .alert.alert-danger
@@ -18,32 +18,27 @@ block main
       table.table.table-bordered.table-hover
         thead
           tr
-            th Mã đơn
-            th Khách hàng
-            th Số điện thoại
-            th Tổng tiền
+            th Mã thanh toán
+            th Phiên
+            th Người thắng
+            th Giá thắng
             th Phương thức
             th Số USDT quét
             th Trạng thái
             th Ngày tạo
             th Hành động
         tbody
-          each item, index in orders
+          each item in orders
             tr
               td= item.id
-              td= item.customerInfo.fullName
-              td= item.customerInfo.phone
-              //- 1. Sửa cách hiển thị tiền gốc
-              td #{item.totalPrice.toLocaleString()} đ
-              
-              //- 2. Thêm cột Phương thức thanh toán
+              td #{item.auctionSnapshot && item.auctionSnapshot.title ? item.auctionSnapshot.title : "Phiên đấu giá"}
+              td= item.bidderCode || "-"
+              td #{item.totalPrice.toLocaleString("vi-VN")}đ
               td
                 if item.paymentMethod === "crypto"
                   span.badge.badge-warning Crypto (USDT)
                 else
-                  span.badge.badge-info Tiền mặt (COD)
-                  
-              //- 3. Thêm cột Số lượng USDT khách nợ
+                  span.badge.badge-info COD
               td
                 if item.paymentMethod === "crypto"
                   strong.text-danger #{item.exact_amount}
@@ -51,9 +46,9 @@ block main
                   span.text-muted -
               td
                 if item.status == "pending"
-                  span.badge.badge-warning Chờ xác nhận
+                  span.badge.badge-warning Chờ xử lý
                 else if item.status == "paid"
-                  span.badge.badge-success Đã thanh toán (USDT)
+                  span.badge.badge-success Đã thanh toán
                 else if item.status == "confirmed"
                   span.badge.badge-info Đã xác nhận
                 else if item.status == "shipping"
@@ -64,16 +59,17 @@ block main
                   span.badge.badge-danger Đã hủy
                 else
                   span.badge.badge-secondary= item.status
-              td= item.createdAt.toLocaleString()
+              td= formatDateShort(item.createdAt)
               td
                 a.btn.btn-sm.btn-info.mr-1(href=`/admin/orders/detail/${item.id}`) Chi tiết
                 .dropdown.d-inline
                   button.btn.btn-sm.btn-warning.dropdown-toggle(type="button" data-toggle="dropdown") Đổi trạng thái
                   .dropdown-menu
-                    a.dropdown-item(href=`/admin/orders/change-status/pending/${item.id}`) Chờ xác nhận
+                    a.dropdown-item(href=`/admin/orders/change-status/pending/${item.id}`) Chờ xử lý
+                    a.dropdown-item(href=`/admin/orders/change-status/paid/${item.id}`) Đã thanh toán
                     a.dropdown-item(href=`/admin/orders/change-status/confirmed/${item.id}`) Đã xác nhận
                     a.dropdown-item(href=`/admin/orders/change-status/shipping/${item.id}`) Đang giao
                     a.dropdown-item(href=`/admin/orders/change-status/done/${item.id}`) Hoàn thành
-                    a.dropdown-item(href=`/admin/orders/change-status/cancel/${item.id}`) Hủy đơn
+                    a.dropdown-item(href=`/admin/orders/change-status/cancel/${item.id}`) Hủy
     else
-      p Chưa có đơn hàng nào.
+      p Chưa có thanh toán phiên thắng nào.

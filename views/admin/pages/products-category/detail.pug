@@ -1,0 +1,33 @@
+extends ../../layout/default.pug
+
+block main
+  h1.mb-4 #{record.title}
+
+  .card.mb-4
+    .card-body
+      if record.thumbnail
+        img.mb-3(src=record.thumbnail, alt=record.title, style="width: 160px")
+
+      p
+        strong Danh mục cha:
+        if parent
+          |  #{parent.title}
+        else
+          |  Không có
+
+      p
+        strong Vị trí:
+        |  #{record.position || 0}
+
+      p
+        strong Trạng thái:
+        if record.status === "active"
+          span.badge.badge-success.ml-2 Hoạt động
+        else
+          span.badge.badge-danger.ml-2 Dừng
+
+      if record.description
+        .mt-3!= record.description
+
+      a.btn.btn-warning.mr-2(href=`${prefixAdmin}/product-category/edit/${record.id}`) Sửa
+      a.btn.btn-secondary(href=`${prefixAdmin}/product-category`) Quay lại

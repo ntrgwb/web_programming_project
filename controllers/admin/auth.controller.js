@@ -44,6 +44,8 @@ module.exports.loginPost = async (req, res) => {
       fullName: user.fullName,
       email: user.email
     };
+    delete req.session.adminLeaveAt;
+    delete req.session.adminStayAt;
 
     req.flash("success", "Đăng nhập thành công!");
     return res.redirect("/admin/dashboard");
@@ -59,4 +61,43 @@ module.exports.logout = (req, res) => {
   req.session.destroy(() => {
     return res.redirect("/admin/auth/login");
   });
+};
+
+// [POST] /admin/auth/leave-admin
+module.exports.leaveAdmin = (req, res) => {
+  if (!req.session) {
+    return res.sendStatus(204);
+  }
+
+  if (!req.session.adminUser) {
+    return res.sendStatus(204);
+  }
+
+  const leftAt = Number(req.query.leftAt || req.body?.leftAt || Date.now());
+  const lastStayAt = Number(req.session.adminStayAt || 0);
+
+  if (!Number.isFinite(leftAt) || leftAt > lastStayAt) {
+    req.session.adminLeaveAt = Number.isFinite(leftAt) ? leftAt : Date.now();
+  }
+
+  req.session.save(() => res.sendStatus(204));
+};
+
+// [POST] /admin/auth/stay-admin
+module.exports.stayAdmin = (req, res) => {
+  if (!req.session) {
+    return res.sendStatus(204);
+  }
+
+  const stayAt = Number(req.query.stayAt || req.body?.stayAt || Date.now());
+  if (Number.isFinite(stayAt)) {
+    req.session.adminStayAt = Math.max(Number(req.session.adminStayAt || 0), stayAt);
+
+    const leaveAt = Number(req.session.adminLeaveAt || 0);
+    if (!leaveAt || leaveAt <= stayAt) {
+      delete req.session.adminLeaveAt;
+    }
+  }
+
+  req.session.save(() => res.sendStatus(204));
 };
