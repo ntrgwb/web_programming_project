@@ -6,25 +6,30 @@ block main
         //- 1. KHU VỰC HERO (Lời chào mừng & Nút Call-to-action)
         .hero-section.text-center.mt-5.mb-5.pt-5
             h1.title-home.glitch-text NullMarket
-            p.lead.text-light.mt-3.mb-5 Tự do. Ẩn danh. Không dấu vết. Mọi giao dịch đều được mã hóa tuyệt đối.
+            p.lead.mt-3.mb-5.cyber-flow
+                span.word.w1 Tự do
+                span.arrow.a1 →
+                span.word.w2 Ẩn danh
+                span.arrow.a2 →
+                span.word.w3 Không dấu vết
+                span.arrow.a3 →
+                span.word.w4 Mã hóa tuyệt đối.
             a.btn.btn-custom-neon.btn-lg(href="/products") >_ TRUY CẬP
 
         //- 2. TUYÊN NGÔN BẢO MẬT (Các khối Trust Indicators)
-        .row.mt-5.pt-4
-            .col-md-4.mb-4
-                .cyber-card.text-center
-                    h4.text-info  Zero-Logs
-                    p.text-muted Không theo dõi IP. Không Cookie. Không yêu cầu Email. Danh tính của bạn là con số 0.
-            
-            .col-md-4.mb-4
-                .cyber-card.text-center
-                    h4.text-info  Ký Quỹ Escrow
-                    p.text-muted Tiền được hệ thống khóa an toàn. Chỉ giải ngân khi bạn xác nhận đã nhận đủ hàng.
-            
-            .col-md-4.mb-4
-                .cyber-card.text-center
-                    h4.text-info  Mã Hóa PGP
-                    p.text-muted Liên lạc đầu cuối tuyệt mật. Chỉ bạn và người bán có thể giải mã được tin nhắn giao dịch.
+        .premium-arc-wrap
+            .premium-arc-stage
+                .premium-card.side.left
+                    h3 Zero-Logs
+                    p Không theo dõi IP. Không Cookie. Không yêu cầu Email. Danh tính của bạn là con số 0.
+
+                .premium-card.center
+                    h3 Ký Quỹ Escrow
+                    p Tiền được hệ thống khóa an toàn. Chỉ giải ngân khi bạn xác nhận đã nhận đủ hàng.
+
+                .premium-card.side.right
+                    h3 Mã Hóa PGP
+                    p Liên lạc đầu cuối tuyệt mật. Chỉ bạn và người bán có thể giải mã được tin nhắn giao dịch.
 
         //- 3. HƯỚNG DẪN LUẬT CHƠI (Giao diện dòng lệnh Terminal)
         .row.mt-5
