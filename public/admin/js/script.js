@@ -186,8 +186,8 @@ if (uploadImage) {
 const sort = document.querySelector("[sort]");
 if(sort) {
     let url = new URL(window.location.href)
-    const sortselect = sort.querySelector("[sort-select");
-    const sortClear = sort.querySelector("[sort-clear");
+    const sortselect = sort.querySelector("[sort-select]");
+    const sortClear = sort.querySelector("[sort-clear]");
 
     sortselect.addEventListener("change", (e) => {
         const value = e.target.value;
@@ -238,3 +238,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 // End Menu 
+
+// Logout admin when leaving admin area by closing the tab or navigating outside admin.
+(() => {
+    let isInternalAdminNavigation = false;
+
+    const postAdminPresence = (path, timeKey) => {
+        const url = `${path}?${timeKey}=${Date.now()}`;
+
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(url);
+            return;
+        }
+
+        fetch(url, {
+            method: "POST",
+            keepalive: true
+        }).catch(() => {});
+    };
+
+    const markInternalAdminNavigation = (url) => {
+        try {
+            const target = new URL(url, window.location.origin);
+            if (target.origin === window.location.origin && target.pathname.startsWith("/admin")) {
+                isInternalAdminNavigation = true;
+            }
+        } catch {
+            // Ignore invalid URLs.
+        }
+    };
+
+    document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link) return;
+
+        markInternalAdminNavigation(link.getAttribute("href"));
+    });
+
+    document.addEventListener("submit", (event) => {
+        const form = event.target;
+        if (!form || !form.getAttribute) return;
+
+        markInternalAdminNavigation(form.getAttribute("action") || window.location.href);
+    });
+
+    window.addEventListener("pageshow", () => {
+        postAdminPresence("/admin/auth/stay-admin", "stayAt");
+
+        setTimeout(() => {
+            postAdminPresence("/admin/auth/stay-admin", "stayAt");
+        }, 300);
+    });
+
+    window.addEventListener("pagehide", (event) => {
+        if (isInternalAdminNavigation) return;
+        if (event.persisted) return;
+
+        postAdminPresence("/admin/auth/leave-admin", "leftAt");
+    });
+})();
+// End logout admin on close

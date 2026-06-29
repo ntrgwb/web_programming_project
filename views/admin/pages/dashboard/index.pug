@@ -5,68 +5,68 @@ block main
     .dashboard-header
       div
         h1 Dashboard
-        p Quản lý tổng quan cửa hàng của bạn
-      a.btn.btn-primary(href="/admin/products") + Thêm sản phẩm
+        p Quản lý tổng quan hệ thống đấu giá ẩn danh
+      a.btn.btn-primary(href="/admin/products") + Tạo phiên đấu giá
 
     .row
       .col-md-3.mb-4
         .stat-card.blue
-          .stat-icon 📦
+          .stat-icon #
           div
-            p Tổng sản phẩm
+            p Tổng phiên
             h2 #{totalProduct}
 
       .col-md-3.mb-4
         .stat-card.green
-          .stat-icon 🗂️
+          .stat-icon B
           div
-            p Danh mục
-            h2 #{totalCategory}
+            p Lượt đặt giá
+            h2 #{totalBid}
 
       .col-md-3.mb-4
         .stat-card.orange
-          .stat-icon 🛒
+          .stat-icon P
           div
-            p Đơn hàng
+            p Thanh toán
             h2 #{totalOrder}
 
       .col-md-3.mb-4
         .stat-card.purple
-          .stat-icon 👤
+          .stat-icon U
           div
-            p Tài khoản
+            p Tài khoản admin
             h2 #{totalAccount}
 
     .row
       .col-md-7.mb-4
         .dashboard-card
           .card-title-custom
-            h4 Đơn hàng mới nhất
+            h4 Thanh toán mới nhất
             a(href="/admin/orders") Xem tất cả
 
           if latestOrders.length > 0
             table.table
               thead
                 tr
-                  th Khách hàng
-                  th Số điện thoại
-                  th Tổng tiền
+                  th Phiên
+                  th Người thắng
+                  th Giá thắng
                   th Trạng thái
               tbody
                 each order in latestOrders
                   tr
-                    td #{order.customerInfo.fullName}
-                    td #{order.customerInfo.phone}
+                    td #{order.auctionSnapshot && order.auctionSnapshot.title ? order.auctionSnapshot.title : "Phiên đấu giá"}
+                    td #{order.bidderCode || "-"}
                     td #{order.totalPrice.toLocaleString("vi-VN")}đ
                     td
                       span.badge.badge-warning #{order.status}
           else
-            p.text-muted Chưa có đơn hàng nào.
+            p.text-muted Chưa có thanh toán nào.
 
       .col-md-5.mb-4
         .dashboard-card
           .card-title-custom
-            h4 Sản phẩm mới
+            h4 Phiên mới
             a(href="/admin/products") Xem tất cả
 
           if latestProducts.length > 0
@@ -75,6 +75,6 @@ block main
                 img(src=product.thumbnail || "/images/no-image.png")
                 div
                   h6 #{product.title}
-                  p #{product.price.toLocaleString("vi-VN")}đ
+                  p #{(product.currentPrice || product.startingPrice || product.price || 0).toLocaleString("vi-VN")}đ
           else
-            p.text-muted Chưa có sản phẩm nào.
+            p.text-muted Chưa có phiên đấu giá nào.

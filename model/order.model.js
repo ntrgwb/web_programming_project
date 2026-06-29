@@ -7,6 +7,15 @@ const orderSchema = new mongoose.Schema(
       phone: String,
       address: String
     },
+    auction_id: String,
+    bidderCode: String,
+    winningBid: Number,
+    auctionSnapshot: {
+      title: String,
+      thumbnail: String,
+      slug: String
+    },
+    // Legacy cart-order structure is kept for older records.
     products: [
       {
         product_id: String,

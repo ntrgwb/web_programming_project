@@ -1,46 +1,37 @@
 extends ../../layout/default.pug
 include ../../mixins/table-tree.pug
+include ../../mixins/alert.pug
 
 block main
-    
-    h1 Danh mục sản phẩm
+  +alert-success(5000)
+  +alert-error(5000)
 
-    .card.mb-3
-        .card-header Danh sách
-            .card-body
-                .row
-                    .col-8
-                    .col4
-                        a(
-                            href=`${prefixAdmin}/product-category/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới 
+  h1 Danh mục tài sản đấu giá
 
-                table(
-                    class ="table table-hover table-sm"
-                    checkbox-multi 
-                )
-                    thead
-                        tr
-                            th 
-                                input(type="checkbox" name="checkall")
-                            th STT
-                            th Hình ảnh
-                            th Tiêu đề
-                            th Vị trí
-                            th Trạng thái
-                            th Hành động
-                    tbody
-                        +table-tree(records)
-//- _id
-//- title 
-//- descripition 
-//- thumbnail 
-//- status 
-//- position 
-//- deleted 
-//- deletedAt 
-//- createdAt 
-//- updatedAt 
-//- slug
+  .card.mb-3
+    .card-header Danh sách
+    .card-body
+      .row
+        .col-8
+        .col-4.text-right
+          a.btn.btn-outline-success(href=`${prefixAdmin}/product-category/create`) + Thêm mới
 
+      table.table.table-hover.table-sm(checkbox-multi)
+        thead
+          tr
+            th
+              input(type="checkbox" name="checkall")
+            th STT
+            th Hình ảnh
+            th Tiêu đề
+            th Vị trí
+            th Trạng thái
+            th Hành động
+        tbody
+          +table-tree(records)
+
+  form(action="" method="POST" id="form-change-status" data-path=`${prefixAdmin}/product-category/change-status`)
+
+  form(action="" method="POST" id="form-delete-item" data-path=`${prefixAdmin}/product-category/delete`)
+
+  script(src="/admin/js/products.js")

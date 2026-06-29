@@ -3,126 +3,43 @@ include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 
 block main
-
   +alert-error(5000)
 
-  h1(class="mb-4") Thêm mới danh mục sản phẩm
+  h1.mb-4 Thêm mới danh mục tài sản đấu giá
 
-  form(
-    action=`${prefixAdmin}/product-category/create` 
-    method="POST"
-    enctype="multipart/form-data"
-    )
-    div(
-      class="form-group"
-      )
-      label(
-        for="title"
-        ) Tiêu đề
-      br
-      input(
-        type="text" 
-        lass="form-control" 
-        id="title" 
-        name="title" 
-        required
-        )
+  form(action=`${prefixAdmin}/product-category/create` method="POST" enctype="multipart/form-data")
+    .form-group
+      label(for="title") Tiêu đề
+      input.form-control(type="text" id="title" name="title" required)
 
-
-    div(
-      class="form-group"
-      )
-      label(
-        for="parent_id"
-        ) Danh mục cha
-      br
-      //- input(
-      //-   type="text" 
-      //-   lass="form-control" 
-      //-   id="parent_id" 
-      //-   name="parent_id" 
-      //-   )
-      select(
-        name="parent_id"
-        id="parent_id"
-        class="form-control"
-      )
+    .form-group
+      label(for="parent_id") Danh mục cha
+      select.form-control(name="parent_id" id="parent_id")
         option(value="") -- Chọn danh mục cha --
-        if(records)
-        +select-tree(records)
+        if records
+          +select-tree(records)
 
-    div(
-      class="form-group"
-      )
-      label(
-        for="desc"
-        ) Mô tả
-      textarea(
-        class="form-control textarea-mce" 
-        id="desc" 
-        name="description" 
-        rows="5" 
-        required
-        )
+    .form-group
+      label(for="desc") Mô tả
+      textarea.form-control.textarea-mce(id="desc" name="description" rows="5" required)
 
-    div(
-      class="form-group"
-      upload-image
+    .form-group(upload-image)
+      label(for="thumbnail") Ảnh
+      input.form-control-file(type="file" id="thumbnail" name="thumbnail" accept="image/*" upload-image-input)
+      img.image-preview(src="" upload-image-preview)
 
-    )
-      label(
-        for="thumbnail"
-        ) Ảnh
-      input(
-        type="file" 
-        class="form-control-file" 
-        id="thumbnail" 
-        name="thumbnail" 
-        placeholder="Đường dẫn ảnh hoặc URL" 
-        accept="image/*" 
-        upload-image-input
-        )
-      img(
-        src=""
-        upload-image-preview
-        class="image-preview"
-      )
-
-    div(class="form-group")
+    .form-group
       label(for="position") Vị trí
-      input(
-        type="number"
-        class="form-control" 
-        id="position" 
-        name="position"
-        placeholder="Tu dong tang"
-        min="1"
-      )
-    div(
-      class="form-group"
-      )
+      input.form-control(type="number" id="position" name="position" placeholder="Tự động tăng" min="1")
+
+    .form-group
       label Trạng thái
       div
-        input(
-          type="radio" 
-          id="active" 
-          name="status" 
-          value="1" 
-          checked
-          )
-        label(
-          for="active"
-          ) Hoạt động
-        input(
-          type="radio" 
-          id="inactive" 
-          name="status" 
-          value="0"
-          )
-        label(
-          for="inactive"
-          ) Dừng hoạt động
+        input(type="radio" id="active" name="status" value="active" checked)
+        label.mr-3(for="active") Hoạt động
+        input(type="radio" id="inactive" name="status" value="inactive")
+        label(for="inactive") Dừng
 
-    button(type="submit" class="btn btn-primary mt-3") Tạo mới
+    button.btn.btn-primary.mt-3(type="submit") Tạo mới
 
-  script(src="/admin/js/product.js")
+  script(src="/admin/js/script.js")

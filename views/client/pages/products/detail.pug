@@ -1,31 +1,107 @@
 extends ../../layouts/default.pug
 
 block main
-  .container.my-3
+  .container.my-4
+    if messages.success
+      .alert.alert-success
+        each item in messages.success
+          div= item
+
+    if messages.error
+      .alert.alert-danger
+        each item in messages.error
+          div= item
+
     .row
+      .col-md-5.mb-4
+        if product.thumbnail
+          img.auction-detail-image(src=product.thumbnail, alt=product.title)
+
+      .col-md-7
+        h1.mb-3 #{product.title}
+
+        .mb-3
+          if product.auctionState === "live"
+            span.badge.badge-success Đang đấu giá
+          else if product.auctionState === "upcoming"
+            span.badge.badge-info Sắp bắt đầu
+          else if product.auctionState === "ended"
+            span.badge.badge-secondary Đã kết thúc
+          else
+            span.badge.badge-warning #{product.auctionState}
+
+        .auction-panel.card-white.mb-3
+          p
+            strong Mã người đấu giá của bạn:
+            |  #{bidderCode}
+          p
+            strong Giá hiện tại:
+            |  #{product.currentPrice.toLocaleString("vi-VN")}đ
+          p
+            strong Giá khởi điểm:
+            |  #{product.startingPrice.toLocaleString("vi-VN")}đ
+          p
+            strong Bước giá:
+            |  #{product.bidStep.toLocaleString("vi-VN")}đ
+          p
+            strong Lượt đặt:
+            |  #{product.bidCount || 0}
+          if product.auctionStartAt
+            p
+              strong Bắt đầu:
+              |  #{formatDateShort(product.auctionStartAt)}
+          if product.auctionEndAt
+            p
+              strong Kết thúc:
+              |  #{formatDateShort(product.auctionEndAt)}
+          if product.highestBidderCode
+            p
+              strong Người đang dẫn:
+              |  #{product.highestBidderMasked}
+
+        if product.description
+          .mb-4!= product.description
+
+        if product.isLive
+          form.card-white.auction-panel(action=`/products/${product._id}/bid` method="POST")
+            .form-group
+              label(for="amount") Giá đặt tối thiểu: #{product.minBid.toLocaleString("vi-VN")}đ
+              input.form-control(
+                type="number"
+                id="amount"
+                name="amount"
+                min=product.minBid
+                step=product.bidStep
+                value=product.minBid
+                required
+              )
+            button.btn.btn-success(type="submit") Đặt giá
+        else if product.isCurrentBidderWinner
+          .alert.alert-success.card-white
+            strong Bạn là người thắng phiên này.
+            a.btn.btn-success.ml-2(href=`/checkout?auction=${product._id}`) Thanh toán
+        else if product.isEnded
+          .alert.alert-secondary.card-white Phiên đấu giá đã kết thúc.
+
+    .row.mt-4
       .col-12
-        if (product.title)
-            h1(class="mb-4") #{product.title}
-
-        if (product.price)
-            div(class="mb-4") Giá: <b>#{product.price}$</b>
-
-        if (product.discountPercentage)
-            div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}%</b>
-
-        if (product.stock)
-            div(class="mb-4") Còn lại: <b>#{product.stock}</b>
-
-        if (product.thumbnail)
-            div(class="mb-4")
-                img(
-                    src=product.thumbnail
-                    style="width: 100px"
-                )
-
-        if (product.position)
-            div(class="mb-4") Vị trí: <b>#{product.position}</b>
-
-        if (product.description)
-            div(class="mb-4") #{product.description}
-
+        h3 Lịch sử đặt giá
+        if bids.length > 0
+          table.table.table-bordered
+            thead
+              tr
+                th Người đặt
+                th Giá đặt
+                th Thời gian
+            tbody
+              each bid in bids
+                tr
+                  td
+                    if bid.isMine
+                      strong #{bid.bidderMasked} (Bạn)
+                    else
+                      | #{bid.bidderMasked}
+                  td #{bid.amount.toLocaleString("vi-VN")}đ
+                  td #{formatDateShort(bid.createdAt)}
+        else
+          .alert.alert-info Chưa có lượt đặt giá nào.

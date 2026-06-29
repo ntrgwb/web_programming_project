@@ -1,244 +1,278 @@
-const Products = require("../../model/product_model")
-
-const systemConfig = require("../../config/system");
-const filterStatusHelpers = require("../../helpers/filterStatus")
-const searchHelpers = require("../../helpers/search")
-const paginationHelpers = require("../../helpers/pagination");
-const { json } = require("body-parser");
 const Product = require("../../model/product_model");
+const Bid = require("../../model/bid.model");
+const systemConfig = require("../../config/system");
+const filterStatusHelpers = require("../../helpers/filterStatus");
+const searchHelpers = require("../../helpers/search");
+const paginationHelpers = require("../../helpers/pagination");
+const { parseVietnamDateTime } = require("../../helpers/dateTime");
 
+const parseNumber = (value, fallback = 0) => {
+  const number = parseInt(value, 10);
+  return Number.isNaN(number) ? fallback : number;
+};
+
+const normalizeStatus = (status) => {
+  if (status === "1") return "active";
+  if (status === "0") return "inactive";
+  return status || "active";
+};
+
+const normalizeAuctionStatus = (status) => status || "live";
+
+const normalizeAuctionBody = (body, existingProduct = null) => {
+  const startingPrice = parseNumber(body.startingPrice || body.price, existingProduct?.startingPrice || 0);
+  const currentPrice = existingProduct?.bidCount > 0
+    ? existingProduct.currentPrice
+    : parseNumber(body.currentPrice, existingProduct?.currentPrice || startingPrice);
+
+  return {
+    title: body.title,
+    description: body.description,
+    startingPrice,
+    currentPrice,
+    bidStep: parseNumber(body.bidStep, existingProduct?.bidStep || 10000),
+    auctionStartAt: parseVietnamDateTime(body.auctionStartAt, { defaultHour: 0, defaultMinute: 0 }),
+    auctionEndAt: parseVietnamDateTime(body.auctionEndAt, { defaultHour: 23, defaultMinute: 59 }),
+    auctionStatus: normalizeAuctionStatus(body.auctionStatus),
+    price: startingPrice,
+    discountPercentage: 0,
+    stock: 1,
+    status: normalizeStatus(body.status),
+    position: parseNumber(body.position, existingProduct?.position || 0)
+  };
+};
+
+const getAuctionState = (product) => {
+  if (product.auctionStatus === "cancelled") return "cancelled";
+  if (product.auctionStatus === "draft") return "draft";
+
+  const now = new Date();
+  if (product.auctionEndAt && product.auctionEndAt <= now) return "ended";
+  if (product.auctionStartAt && product.auctionStartAt > now) return "upcoming";
+
+  return "live";
+};
+
+const decorateAuction = (product) => {
+  const auction = product.toObject ? product.toObject() : product;
+  auction.id = product.id || product._id?.toString();
+  auction.auctionState = getAuctionState(product);
+  auction.currentPrice = product.currentPrice || product.startingPrice || product.price || 0;
+  auction.startingPrice = product.startingPrice || product.price || 0;
+  auction.bidStep = product.bidStep || 10000;
+  return auction;
+};
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
-    // console.log(req.query.status);
-    const filterStatus = filterStatusHelpers(req.query);
+  const filterStatus = filterStatusHelpers(req.query);
 
-    // console.log(filterStatus);
+  const find = {
+    deleted: false
+  };
 
-    let find = {
-        deleted: false
-    };
+  if (req.query.status) {
+    find.status = req.query.status;
+  }
 
-    if (req.query.status) {
+  const objectSearch = searchHelpers(req.query);
 
-        find.status = req.query.status
-    }
+  if (objectSearch.regex) {
+    find.title = objectSearch.regex;
+  }
 
-    const objectSearch = searchHelpers(req.query);
+  const countProducts = await Product.countDocuments(find);
+  const objectPagination = paginationHelpers(
+    {
+      currentPage: 1,
+      limitItems: 4
+    },
+    req.query,
+    countProducts
+  );
 
-    // console.log(objectSearch);
+  const sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort.position = "desc";
+  }
 
+  const products = await Product.find(find)
+    .sort(sort)
+    .limit(objectPagination.limitItems)
+    .skip(objectPagination.skip);
 
-    if (objectSearch.regex) {
-
-        find.title = objectSearch.regex;;
-    }
-
-    //Pagination
-    const countProuducts = await Products.countDocuments(find);
-    let objectPagination = paginationHelpers(
-        {
-            currentPage: 1,
-            limitItems: 4
-        },
-        req.query,
-        countProuducts
-    );
-    //End Pagination
-
-    // Sort
-    let sort = {};
-     if(req.query.sortKey && req.query.sortValue) {
-        sort[req.query.sortKey] = req.query.sortValue;
-     }
-     else {
-        sort.position = "desc"
-     }
-    // End Sort
-
-    const products = await Products.find(find)
-        .sort(sort)
-        .limit(objectPagination.limitItems)
-        .skip(objectPagination.skip);
-
-    res.render('admin/pages/products/index', {
-        pageTitle: "Trang san pham",
-        products: products,
-        filterStatus: filterStatus,
-        keyword: objectSearch.keyword,
-        pagination: objectPagination
-    });
+  res.render("admin/pages/products/index", {
+    pageTitle: "Quản lý phiên đấu giá",
+    products: products.map(decorateAuction),
+    filterStatus,
+    keyword: objectSearch.keyword,
+    pagination: objectPagination
+  });
 };
 
-// [GET] admin/products/change-status/:status/:id
+// [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    console.log(req.params);
-    const status = req.params.status;
-    const id = req.params.id;
+  const status = req.params.status;
+  const id = req.params.id;
 
-    await Products.updateOne({ _id: id }, { status: status });
+  await Product.updateOne({ _id: id }, { status });
 
-    req.flash("success", "Cập nhật trạng thái thành công");
-
-    res.redirect("/admin/products");
+  req.flash("success", "Cập nhật trạng thái thành công.");
+  res.redirect("/admin/products");
 };
 
-// [PATCH] admin/products/change-multi  //Bai23
+// [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-    const ids = req.body.ids.split(", ");
-    const type = req.body.type;
-    switch (type) {
-        case "active":
-            await Products.updateMany({ _id: { $in: ids } }, { status: "active" });
-            req.flash("success", `Cập nhật trạng thái thành công ${ids.length} sản phẩm`);
-            break;
-        case "inactive":
-            await Products.updateMany({ _id: { $in: ids } }, { status: "inactive" });
-            req.flash("success", `Cập nhật trạng thái thành công ${ids.length} sản phẩm`);
-            break;
+  const ids = req.body.ids.split(", ");
+  const type = req.body.type;
 
-        case "delete-all":
-            await Products.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() });
-            req.flash("success", `Xóa sản phẩm thành công ${ids.length} sản phẩm`);
-            break;
-        case "change-position":
-            console.log(ids);
-            for (const item of ids) {
-                let [id, position] = item.split("-");
-                position = parseInt(position);
-                console.log(id);
-                console.log(position);
-                await Products.updateOne({ _id: id }, { position: position });
-            }
-            req.flash("success", `Cập nhật vị trí thành công ${ids.length} sản phẩm`);
-            break;
+  switch (type) {
+    case "active":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash("success", `Đã bật ${ids.length} phiên đấu giá.`);
+      break;
+    case "inactive":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash("success", `Đã tắt ${ids.length} phiên đấu giá.`);
+      break;
+    case "delete-all":
+      await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() });
+      req.flash("success", `Đã xóa ${ids.length} phiên đấu giá.`);
+      break;
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position, 10);
+        await Product.updateOne({ _id: id }, { position });
+      }
+      req.flash("success", `Đã cập nhật vị trí ${ids.length} phiên đấu giá.`);
+      break;
+    default:
+      break;
+  }
 
-        default:
-            break;
-
-    }
-
-
-    res.redirect("/admin/products");
-
+  res.redirect("/admin/products");
 };
 
-// [PATCH] admin/products/delete/:id
+// [DELETE] /admin/products/delete/:id
 module.exports.deletedItem = async (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    // await Products.deleteOne({ _id: id });
-    await Products.updateOne({ _id: id }, {
-        deleted: true,
-        deletedAt: new Date()
-    });
-    req.flash("success", `Xóa sản phẩm thành công sản phẩm ${id}`);
+  await Product.updateOne({ _id: id }, {
+    deleted: true,
+    deletedAt: new Date()
+  });
 
-    res.redirect("/admin/products");
-
-
+  req.flash("success", "Đã xóa phiên đấu giá.");
+  res.redirect("/admin/products");
 };
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
-    res.render("admin/pages/products/create", {
-        pageTitle: "Thêm sản phẩm"
-    });
+  res.render("admin/pages/products/create", {
+    pageTitle: "Tạo phiên đấu giá"
+  });
 };
 
-// [POST] /admin/products/createPost
+// [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
+  const body = normalizeAuctionBody(req.body);
 
-    req.body.price = parseInt(req.body.price) || 0;
-    req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
-    req.body.stock = parseInt(req.body.stock) || 0;
+  if (!body.position) {
+    const countProducts = await Product.countDocuments();
+    body.position = countProducts + 1;
+  }
 
-    if (req.body.position == "" || isNaN(req.body.position)) {
-        const countProducts = await Products.countDocuments();
-        req.body.position = countProducts + 1;
-    }
-    else {
-        req.body.position = parseInt(req.body.position);
-    }
+  if (req.body.thumbnail) {
+    body.thumbnail = req.body.thumbnail;
+  }
 
-    const Product = new Products(req.body);
-    await Product.save();
+  const product = new Product(body);
+  await product.save();
 
-    req.flash("success", "Thêm sản phẩm thành công");
-
-    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  req.flash("success", "Tạo phiên đấu giá thành công.");
+  res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
-
 
 // [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
-    try {
-        const find = {
-            deleted: false,
-            _id: req.params.id
-        };
+  try {
+    const product = await Product.findOne({
+      deleted: false,
+      _id: req.params.id
+    });
 
-        const product = await Product.findOne(find);
-
-        res.render("admin/pages/products/edit", {
-            pageTitle: "Chinh sua san pham",
-            product: product
-        })
-    } catch (error) {
-        req.flash("error", `Khong ton tai san pham nay!`);
-        res.redirect(`${systemConfig.prefixAdmin}/products`);
+    if (!product) {
+      req.flash("error", "Phiên đấu giá không tồn tại.");
+      return res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 
+    res.render("admin/pages/products/edit", {
+      pageTitle: "Chỉnh sửa phiên đấu giá",
+      product: decorateAuction(product)
+    });
+  } catch (error) {
+    req.flash("error", "Không tải được phiên đấu giá.");
+    return res.redirect(`${systemConfig.prefixAdmin}/products`);
+  }
 };
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      deleted: false,
+      _id: req.params.id
+    });
 
-    const id = req.params.id;
-
-    req.body.price = parseInt(req.body.price) || 0;
-    req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
-    req.body.stock = parseInt(req.body.stock) || 0;
-
-    if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    if (!product) {
+      req.flash("error", "Phiên đấu giá không tồn tại.");
+      return res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 
-    try {
-        await Product.updateOne({
-            _id: req.params.id
-        }, req.body)
-        req.flash("success", "Cap nhat sản phẩm thành công");
+    const body = normalizeAuctionBody(req.body, product);
 
-    } catch {
-        req.flash("error", "Cap nhat sản phẩm that bai!");
-
+    if (req.body.thumbnail) {
+      body.thumbnail = req.body.thumbnail;
     }
 
+    await Product.updateOne({ _id: req.params.id }, body);
+    req.flash("success", "Cập nhật phiên đấu giá thành công.");
+  } catch (error) {
+    console.log(error);
+    req.flash("error", "Cập nhật phiên đấu giá thất bại.");
+  }
 
-    res.redirect(`${systemConfig.prefixAdmin}/products`);
-
-
+  res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
 
 // [GET] /admin/products/detail/:id
-
 module.exports.detail = async (req, res) => {
-    try {
-        const find = {
-            deleted: false,
-            _id: req.params.id
-        };
+  try {
+    const product = await Product.findOne({
+      deleted: false,
+      _id: req.params.id
+    });
 
-        const product = await Product.findOne(find);
-
-        res.render("admin/pages/products/detail", {
-            pageTitle: product.title,
-            product: product
-        })
-    } catch (error) {
-        req.flash("error", `Khong ton tai san pham nay!`);
-        res.redirect(`${systemConfig.prefixAdmin}/products`);
+    if (!product) {
+      req.flash("error", "Phiên đấu giá không tồn tại.");
+      return res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 
+    const bids = await Bid.find({ auction_id: product.id })
+      .sort({ amount: -1, createdAt: -1 })
+      .limit(50);
+
+    res.render("admin/pages/products/detail", {
+      pageTitle: product.title,
+      product: decorateAuction(product),
+      bids
+    });
+  } catch (error) {
+    console.log(error);
+    req.flash("error", "Không tải được chi tiết phiên đấu giá.");
+    return res.redirect(`${systemConfig.prefixAdmin}/products`);
+  }
 };

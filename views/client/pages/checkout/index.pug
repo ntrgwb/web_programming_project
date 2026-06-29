@@ -6,12 +6,21 @@ block main
       .col-md-8
         .card.shadow-sm.border-0
           .card-body.p-4.p-md-5
-            h2.text-center.mb-4 Thông tin đặt hàng
+            h2.text-center.mb-4 Thanh toán phiên thắng
+
+            .alert.alert-info
+              p.mb-1
+                strong Phiên:
+                |  #{auction.title}
+              p.mb-0
+                strong Giá thắng:
+                |  #{totalPrice.toLocaleString("vi-VN")}đ
 
             form(action="/checkout/order" method="POST")
-              
+              input(type="hidden" name="auctionId" value=auction.id)
+
               .form-group.mb-3
-                label.font-weight-bold Họ tên
+                label.font-weight-bold Họ tên người nhận
                 input.form-control(type="text" name="fullName" required)
 
               .form-group.mb-3
@@ -19,25 +28,20 @@ block main
                 input.form-control(type="text" name="phone" required)
 
               .form-group.mb-4
-                label.font-weight-bold Địa chỉ
+                label.font-weight-bold Địa chỉ nhận hàng
                 textarea.form-control(name="address" rows="3" required)
 
               hr.my-4
 
-              //- THÊM PHẦN CHỌN PHƯƠNG THỨC THANH TOÁN
               .form-group.mb-4
                 label.font-weight-bold Phương thức thanh toán
-                
+
                 .form-check.mb-2.p-2.border.rounded.bg-light
                   input.form-check-input.ml-1.mt-2(type="radio" name="paymentMethod" id="pay-cod" value="cod" checked)
-                  label.form-check-label.ml-4(for="pay-cod") Thanh toán tiền mặt
-                
+                  label.form-check-label.ml-4(for="pay-cod") Thanh toán khi nhận hàng
+
                 .form-check.p-2.border.rounded.bg-light
                   input.form-check-input.ml-1.mt-2(type="radio" name="paymentMethod" id="pay-crypto" value="crypto")
                   label.form-check-label.ml-4(for="pay-crypto") Thanh toán bằng USDT (TRC20)
 
-              hr.my-4
-
-              h4.mt-3.mb-4 Tổng tiền: #{totalCartPrice}đ
-
-              button.btn.btn-success.w-100.py-2.font-weight-bold(type="submit") Xác nhận đặt hàng
+              button.btn.btn-success.w-100.py-2.font-weight-bold(type="submit") Xác nhận thanh toán

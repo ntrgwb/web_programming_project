@@ -1,59 +1,47 @@
-extends ../../layouts/default.pug 
-block main 
-    //- h1.title-home Trang Chủ
+extends ../../layouts/default.pug
 
-    .container 
-        //- 1. KHU VỰC HERO (Lời chào mừng & Nút Call-to-action)
-        .hero-section.text-center.mt-5.mb-5.pt-5
-            h1.title-home.glitch-text NullMarket
-            p.lead.mt-3.mb-5.cyber-flow
-                span.word.w1 Tự do
-                span.arrow.a1 →
-                span.word.w2 Ẩn danh
-                span.arrow.a2 →
-                span.word.w3 Không dấu vết
-                span.arrow.a3 →
-                span.word.w4 Mã hóa tuyệt đối.
-            a.btn.btn-custom-neon.btn-lg(href="/products") >_ TRUY CẬP
+block main
+  .container
+    .hero-section.text-center.mt-5.mb-5.pt-5
+      h1.title-home.glitch-text NullAuction
+      p.lead.text-light.mt-3.mb-5 Đấu giá ẩn danh. Không tài khoản. Mỗi lượt đặt được gắn với một mã phiên riêng.
+      a.btn.btn-custom-neon.btn-lg(href="/products") >_ VÀO PHIÊN ĐẤU GIÁ
 
-        //- 2. TUYÊN NGÔN BẢO MẬT (Các khối Trust Indicators)
-        .premium-arc-wrap
-            .premium-arc-stage
-                .premium-card.side.left
-                    h3 Zero-Logs
-                    p Không theo dõi IP. Không Cookie. Không yêu cầu Email. Danh tính của bạn là con số 0.
+    .row.mt-5.pt-4
+      .col-md-4.mb-4
+        .cyber-card.text-center
+          h4.text-info Mã Ẩn Danh
+          p.text-muted Người đấu giá được nhận mã phiên tự động, không cần email hoặc tài khoản.
 
-                .premium-card.center
-                    h3 Ký Quỹ Escrow
-                    p Tiền được hệ thống khóa an toàn. Chỉ giải ngân khi bạn xác nhận đã nhận đủ hàng.
+      .col-md-4.mb-4
+        .cyber-card.text-center
+          h4.text-info Đặt Giá Công Khai
+          p.text-muted Lịch sử giá được hiển thị minh bạch, danh tính người đặt được rút gọn.
 
-                .premium-card.side.right
-                    h3 Mã Hóa PGP
-                    p Liên lạc đầu cuối tuyệt mật. Chỉ bạn và người bán có thể giải mã được tin nhắn giao dịch.
+      .col-md-4.mb-4
+        .cyber-card.text-center
+          h4.text-info Thanh Toán Sau Khi Thắng
+          p.text-muted Người thắng mới cần tạo thông tin nhận hàng và chọn phương thức thanh toán.
 
-        //- 3. HƯỚNG DẪN LUẬT CHƠI (Giao diện dòng lệnh Terminal)
-        .row.mt-5
-            .col-md-10.offset-md-1
-                .terminal-box
-                    .terminal-header
-                    span.dot.bg-danger
-                    span.dot.bg-warning
-                    span.dot.bg-success
-                    span.terminal-title root@anonymous-market:~
-                    .terminal-body
-                    p.text-success >_ HƯỚNG DẪN GIAO DỊCH KHÔNG CẦN TÀI KHOẢN:
-                    p.text-light [1] Lựa chọn: Khám phá và chọn tài nguyên bạn cần trên hệ thống.
-                    p.text-light [2] Mã hóa: Cung cấp địa chỉ nhận (hoặc email ẩn danh) đã được mã hóa bằng PGP Key của người bán.
-                    p.text-light [3] Thanh toán: Trả bằng Crypto (BTC/XMR). Lưu trữ cẩn thận 
-                        strong.text-warning MÃ ĐƠN HÀNG (Order Hash) 
-                        | của bạn.
-                    p.text-danger [!] Chú ý: Mất Order Hash = Mất đơn hàng. Hệ thống không lưu dữ liệu để khôi phục.
-                    p.text-success >_ 
-                        span.blink-cursor █
+    .row.mt-5
+      .col-md-10.offset-md-1
+        .terminal-box
+          .terminal-header
+            span.dot.bg-danger
+            span.dot.bg-warning
+            span.dot.bg-success
+            span.terminal-title root@anonymous-auction:~
+          .terminal-body
+            p.text-success >_ QUY TRÌNH ĐẤU GIÁ ẨN DANH:
+            p.text-light [1] Chọn một phiên đấu giá đang mở.
+            p.text-light [2] Đặt giá bằng mã ẩn danh do hệ thống cấp trong session.
+            p.text-light [3] Khi phiên kết thúc, người dẫn giá có thể tạo thanh toán.
+            p.text-danger [!] Hãy lưu lại mã người đấu giá nếu cần đối chiếu trong cùng trình duyệt.
+            p.text-success >_
+              span.blink-cursor █
 
-        //- 4. CẢNH BÁO HỆ THỐNG (Disclaimer)
-        .row.mt-5.mb-5
-            .col-md-10.offset-md-1
-                .warning-box.text-center
-                    strong.text-danger [ CẢNH BÁO ] 
-                    span.text-muted Mọi giao dịch tại đây là không thể đảo ngược (Irreversible). Hãy kiểm tra kỹ mức độ uy tín (Vendor Level) của người bán trước khi chuyển tiền. Khuyến nghị luôn sử dụng VPN khi truy cập.
+    .row.mt-5.mb-5
+      .col-md-10.offset-md-1
+        .warning-box.text-center
+          strong.text-danger [ LƯU Ý ]
+          span.text-muted  Phiên đấu giá dựa trên session trình duyệt. Xóa cookie/session có thể làm mất khả năng xác nhận người thắng.
