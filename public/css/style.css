@@ -489,7 +489,6 @@ input::placeholder {
 .badge-pop {
   transform: scale(1.5);
   box-shadow: 0 0 10px #ff424e;
-<<<<<<< HEAD
 }
 
 .cyber-flow {
@@ -633,6 +632,3 @@ body {
   border-color: #00ffff;
   box-shadow: 0 0 55px rgba(0,255,255,0.75);
 }
-=======
-}
->>>>>>> origin/FrontEnd_V
