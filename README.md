@@ -36,7 +36,7 @@ https://drive.google.com/file/d/1v5Rf6LhQ4VUU210qBBq2NJibvaaj1a2H/view?usp=shari
 1. Clone dự án: `git clone [link-repo]`
 2. Cài đặt thư viện: `npm install`
 3. Cấu hình biến môi trường: Đổi tên file `.env.example` thành `.env` và điền cấu hình Database (MongoDB).
-4. Khởi chạy: `npm run start`
+4. Khởi chạy: `npm start`
 
 ---
 
