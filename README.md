@@ -5,7 +5,7 @@
 NullAuction là một ứng dụng web đấu giá thời gian thực được xây dựng với mục tiêu tối ưu hóa trải nghiệm người dùng và bảo vệ dữ liệu cá nhân. Dự án loại bỏ hoàn toàn rào cản đăng ký tài khoản, cho phép người chơi tham gia ngay vào các phiên đấu giá thông qua cơ chế định danh ẩn danh bằng Session.
 
 ### 💻 Công nghệ sử dụng (Tech Stack):
-Frontend: HTML5, CSS3 (Animations, 3D Transforms), JavaScript, Pug Template Engine
+Frontend: HTML5, CSS3, JavaScript, Pug Template Engine
 
 Backend: Node.js, Express.js
 
