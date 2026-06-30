@@ -1,4 +1,4 @@
-# Đồ án: NullAuction - Hệ thống đấu giá ẩn danh
+# NullAuction - Hệ thống đấu giá ẩn danh
 
 Mô tả đồ án: Website đấu giá ẩn danh sử dụng Node.js, Express, MongoDB, Cloudinary
 
