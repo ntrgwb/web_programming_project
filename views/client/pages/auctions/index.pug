@@ -1,0 +1,26 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-5
+    h1.title-home.text-center.mb-5.auction-glow-title Đấu Giá Ẩn Danh
+    .text-center.mb-5
+        a.btn.btn-custom-neon(href="/auctions/create") + Tạo phiên đấu giá
+
+    .auction-grid
+      each item in auctions
+        .auction-card
+          if item.image
+            img.auction-img(src=item.image)
+
+          h3= item.title
+          p= item.description
+
+          .auction-price
+            span Giá hiện tại:
+            strong #{item.currentPrice.toLocaleString("vi-VN")}đ
+
+          .auction-time
+            span Kết thúc:
+            strong #{item.endTime.toLocaleString("vi-VN")}
+
+          a.btn.btn-custom-neon.mt-3(href=`/auctions/${item.id}`) Vào đấu giá

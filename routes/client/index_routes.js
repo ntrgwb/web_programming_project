@@ -4,6 +4,7 @@ const cartRoutes = require("./cart.route");
 const checkoutRoutes = require("./checkout.route");
 const orderRoutes = require("./order.route");
 const chatRoute = require("./chat.route");
+const auctionRoutes = require("./auction.route");
 module.exports = (app) => {
 app.use("/", homeRoutes);
 app.use("/products", productsRoutes);
@@ -11,5 +12,6 @@ app.use("/cart", cartRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/orders", orderRoutes);
 app.use("/chat", chatRoute);
+app.use("/auctions", auctionRoutes);
 
 }

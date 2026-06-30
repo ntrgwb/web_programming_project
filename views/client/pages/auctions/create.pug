@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-5
+    h1.title-home.text-center.mb-5 Tạo Phiên Đấu Giá
+
+    if error
+      .alert.alert-danger= error
+
+    form.auction-create-form(method="POST", action="/auctions/create", enctype="multipart/form-data")
+      label.text-light Tên sản phẩm
+      input.form-control.mb-3(type="text", name="title", required)
+
+      label.text-light Mô tả sản phẩm
+      textarea.form-control.mb-3(name="description", required)
+
+      label.text-light Ảnh sản phẩm
+      input.form-control.mb-3(type="file", name="image", accept="image/*", required)
+
+      label.text-light Giá khởi điểm
+      input.form-control.mb-3(type="number", name="startPrice", min="1", required)
+
+      label.text-light Thời gian bắt đầu
+      input.form-control.mb-3(type="datetime-local", name="startTime", required)
+
+      label.text-light Thời gian kết thúc
+      input.form-control.mb-3(type="datetime-local", name="endTime", required)
+
+      button.btn.btn-custom-neon(type="submit") Gửi admin duyệt

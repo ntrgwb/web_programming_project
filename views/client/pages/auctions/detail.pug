@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-5
+    .auction-detail
+      if auction.image
+        img.auction-detail-img(src=auction.image)
+
+      .auction-detail-content
+        h1= auction.title
+        p= auction.description
+
+        h3 Giá hiện tại: #{auction.currentPrice.toLocaleString("vi-VN")}đ
+        .auction-countdown(data-end=auction.endTime.toISOString())
+            .count-title Kết thúc phiên sau
+            .count-boxes
+                .count-item
+                    strong(data-unit="days") 00
+                    span Ngày
+                .count-item
+                    strong(data-unit="hours") 00
+                    span Giờ
+                .count-item
+                    strong(data-unit="minutes") 00
+                    span Phút
+                .count-item
+                    strong(data-unit="seconds") 00
+                    span Giây
+        p Mã ẩn danh của bạn: 
+          strong= bidderCode
+
+        if auction.status == "active"
+          form(method="POST", action=`/auctions/${auction.id}/bid`)
+              input.form-control.mt-3(type="number", name="amount", min=auction.currentPrice + 1, placeholder="Nhập giá cao hơn giá hiện tại")
+              button.btn.btn-custom-neon.mt-3(type="submit") Đặt giá ẩn danh
+        else if auction.status == "upcoming"
+          .alert.alert-warning.mt-3 Phiên đấu giá chưa bắt đầu.
+        else if auction.status == "ended"
+          .alert.alert-danger.mt-3 Phiên đấu giá đã kết thúc.
+
+    h2.mt-5 Lịch sử đấu giá
+
+    .bid-history
+      each bid in bids
+        .bid-row
+          span= bid.bidderCode
+          strong #{bid.amount.toLocaleString("vi-VN")}đ
+          small #{bid.createdAt.toLocaleString("vi-VN")}

@@ -1,3 +1,4 @@
+const auctionRoutes = require("./auction.route");
 const systemConfig = require("../../config/system");
 
 const dashboardRoutes = require("./dashboard_route");
@@ -12,6 +13,7 @@ const authMiddleware = require("../../milddlewares/admin/auth.middleware");
 module.exports = (app) => {
   const PATH_ADMIN = systemConfig.prefixAdmin;
 
+  app.use(PATH_ADMIN + "/auctions", authMiddleware.requireAuth, auctionRoutes);
   app.use(PATH_ADMIN + "/auth", authRoutes);
 
   app.use(PATH_ADMIN + "/dashboard", authMiddleware.requireAuth, dashboardRoutes);

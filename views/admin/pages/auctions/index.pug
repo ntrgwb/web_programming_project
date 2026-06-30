@@ -1,0 +1,33 @@
+extends ../../layout/default.pug
+
+block main
+  h1 Duyệt phiên đấu giá
+
+  table.table.table-hover.table-sm
+    thead
+      tr
+        th Ảnh
+        th Tên sản phẩm
+        th Giá khởi điểm
+        th Bắt đầu
+        th Kết thúc
+        th Hành động
+    tbody
+      each item in auctions
+        tr
+          td
+            if item.image
+              img(src=item.image, style="width:80px;height:80px;object-fit:cover")
+          td
+            strong= item.title
+            br
+            small= item.description
+          td #{item.startPrice.toLocaleString("vi-VN")}đ
+          td= item.startTime.toLocaleString("vi-VN")
+          td= item.endTime.toLocaleString("vi-VN")
+          td
+            form(method="POST", action=`/admin/auctions/${item.id}/approve`, style="display:inline-block;margin-right:8px")
+              button.btn.btn-success.btn-sm(type="submit") Duyệt
+
+            form(method="POST", action=`/admin/auctions/${item.id}/reject`, style="display:inline-block")
+              button.btn.btn-danger.btn-sm(type="submit") Từ chối
