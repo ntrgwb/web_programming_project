@@ -6,9 +6,13 @@ NullAuction là một ứng dụng web đấu giá thời gian thực được x
 
 ### 💻 Công nghệ sử dụng (Tech Stack):
 Frontend: HTML5, CSS3 (Animations, 3D Transforms), JavaScript, Pug Template Engine
+
 Backend: Node.js, Express.js
+
 Database: MongoDB (Mongoose ORM)
+
 Real-time Communication: Socket.io
+
 Tích hợp API (Cloud Services): Cloudinary
 
 ## Danh sách thành viên
