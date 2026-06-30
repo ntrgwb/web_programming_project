@@ -97,3 +97,15 @@ function animate() {
 }
 
 animate();
+
+document.addEventListener("turbo:load", () => {
+  // Kiểm tra xem body mới đã có canvas chưa, nếu chưa thì gắn lại
+  if (!document.body.contains(canvas)) {
+    document.body.appendChild(canvas);
+  }
+  
+  // Tương tự với dấu chấm con trỏ
+  if (!document.body.contains(dot)) {
+    document.body.appendChild(dot);
+  }
+});
