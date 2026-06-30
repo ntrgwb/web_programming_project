@@ -5,9 +5,9 @@ Mô tả đồ án: Website đấu giá ẩn danh sử dụng Node.js, Express, 
 ## Danh sách thành viên
 | STT | Họ và Tên | Vai trò | Tỷ lệ đóng góp |
 | :---: | :--- | :--- | :---: |
-| 1 | [Ngô Trường] | Backend | 34% |
-| 2 | [Phạm Minh Đức] | Full-stack | 33% |
-| 3 | [Cún Thế Và] | Frontend | 33% |
+| 1 | Ngô Trường | Backend | 34% |
+| 2 | Phạm Minh Đức | Full-stack | 34% |
+| 3 | Cún Thế Và | Frontend | 32% |
 | **Tổng** | | | **100%** |
 
 ---
